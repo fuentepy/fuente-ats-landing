@@ -1,0 +1,333 @@
+/* Scoped styles for the ATS product landing — self-contained on purpose
+   (own prefix, own class, no dependency on the rest of the app's design
+   system) so this folder can be lifted into its own repo later without
+   dragging along shadcn/Tailwind config or the internal dark theme. */
+
+.landing-ats {
+  --ats-primary: 116 52% 44%;      /* #39A935 */
+  --ats-secondary: 77 72% 44%;     /* #93C01F */
+  --ats-ink: 150 15% 8%;           /* near-black with a green cast */
+  --ats-bg: 0 0% 100%;
+  --ats-fg: 0 0% 5%;
+  --ats-muted: 100 20% 97%;
+  --ats-muted-fg: 0 0% 42%;
+  --ats-border: 0 0% 90%;
+  --ats-card: 0 0% 100%;
+
+  background-color: hsl(var(--ats-bg));
+  color: hsl(var(--ats-fg));
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+.landing-ats h1,
+.landing-ats h2,
+.landing-ats h3,
+.landing-ats h4 {
+  font-weight: 700;
+  color: hsl(var(--ats-fg));
+  letter-spacing: -0.01em;
+  margin: 0;
+}
+
+.landing-ats p { margin: 0; }
+
+.landing-ats .ats-container {
+  max-width: 78rem;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1.25rem;
+  padding-right: 1.25rem;
+}
+@media (min-width: 640px) { .landing-ats .ats-container { padding-left: 1.5rem; padding-right: 1.5rem; } }
+@media (min-width: 1024px) { .landing-ats .ats-container { padding-left: 2rem; padding-right: 2rem; } }
+
+.landing-ats .ats-section { padding-top: 4rem; padding-bottom: 4rem; }
+@media (min-width: 768px) { .landing-ats .ats-section { padding-top: 6rem; padding-bottom: 6rem; } }
+
+.landing-ats .ats-muted-bg { background-color: hsl(var(--ats-muted)); }
+.landing-ats .ats-dark-bg { background-color: hsl(var(--ats-ink)); color: #fff; }
+
+.landing-ats .ats-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: hsl(var(--ats-primary));
+  background: hsl(var(--ats-primary) / 0.1);
+  padding: 0.35rem 0.9rem;
+  border-radius: 999px;
+}
+
+.landing-ats .ats-text-gradient {
+  background: linear-gradient(135deg, hsl(var(--ats-primary)), hsl(var(--ats-secondary)));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.landing-ats .ats-btn-gradient {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background: linear-gradient(135deg, hsl(var(--ats-primary)), hsl(var(--ats-secondary)));
+  color: #fff;
+  font-weight: 600;
+  padding: 0.9rem 2rem;
+  border-radius: 0.6rem;
+  border: none;
+  cursor: pointer;
+  transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.25s;
+  box-shadow: 0 0 24px hsl(var(--ats-primary) / 0.35);
+  font-size: 1rem;
+  white-space: nowrap;
+}
+.landing-ats .ats-btn-gradient:hover:not(:disabled) {
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 8px 30px hsl(var(--ats-primary) / 0.5);
+}
+.landing-ats .ats-btn-gradient:disabled { opacity: 0.6; cursor: not-allowed; }
+
+.landing-ats .ats-btn-outline {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border: 2px solid hsl(var(--ats-border));
+  background: transparent;
+  color: hsl(var(--ats-fg));
+  font-weight: 600;
+  padding: 0.8rem 1.75rem;
+  border-radius: 0.6rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 1rem;
+}
+.landing-ats .ats-btn-outline:hover { border-color: hsl(var(--ats-primary)); color: hsl(var(--ats-primary)); }
+.landing-ats .ats-dark-bg .ats-btn-outline { border-color: rgba(255,255,255,0.25); color: #fff; }
+.landing-ats .ats-dark-bg .ats-btn-outline:hover { border-color: #fff; }
+
+.landing-ats .ats-card {
+  background: hsl(var(--ats-card));
+  border: 1px solid hsl(var(--ats-border));
+  border-radius: 1rem;
+  padding: 1.75rem;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+  transition: box-shadow 0.3s, transform 0.3s;
+}
+.landing-ats .ats-card:hover { box-shadow: 0 14px 34px -12px rgba(0,0,0,0.18); transform: translateY(-3px); }
+
+.landing-ats .ats-input,
+.landing-ats .ats-textarea,
+.landing-ats .ats-select {
+  width: 100%;
+  border: 2px solid hsl(var(--ats-border));
+  background: #fff;
+  color: hsl(var(--ats-fg));
+  border-radius: 0.6rem;
+  padding: 0.65rem 0.9rem;
+  font-size: 0.95rem;
+  font-family: inherit;
+  transition: border-color 0.15s;
+}
+.landing-ats .ats-input:focus,
+.landing-ats .ats-textarea:focus,
+.landing-ats .ats-select:focus { outline: none; border-color: hsl(var(--ats-primary)); }
+.landing-ats .ats-textarea { min-height: 110px; resize: vertical; }
+.landing-ats .ats-label {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 500;
+  margin-bottom: 0.4rem;
+  color: hsl(var(--ats-fg));
+}
+
+/* Product mockup (browser chrome + kanban board), pure CSS — no screenshot asset needed */
+.landing-ats .ats-browser {
+  border-radius: 1rem;
+  overflow: hidden;
+  background: hsl(var(--ats-card));
+  border: 1px solid hsl(var(--ats-border));
+  box-shadow: 0 30px 60px -20px rgba(0,0,0,0.35);
+}
+.landing-ats .ats-browser-bar {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.65rem 0.9rem;
+  background: hsl(0 0% 96%);
+  border-bottom: 1px solid hsl(var(--ats-border));
+}
+.landing-ats .ats-browser-dot { width: 0.6rem; height: 0.6rem; border-radius: 999px; background: hsl(0 0% 82%); }
+.landing-ats .ats-browser-url {
+  margin-left: 0.5rem;
+  font-size: 0.72rem;
+  color: hsl(var(--ats-muted-fg));
+  background: #fff;
+  border: 1px solid hsl(var(--ats-border));
+  border-radius: 999px;
+  padding: 0.15rem 0.8rem;
+}
+.landing-ats .ats-kanban {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(150px, 1fr));
+  gap: 0.75rem;
+  padding: 1.25rem;
+  background: hsl(var(--ats-muted));
+  overflow-x: auto;
+}
+.landing-ats .ats-kanban-col-title {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: hsl(var(--ats-muted-fg));
+  margin-bottom: 0.6rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.landing-ats .ats-kanban-count {
+  background: hsl(var(--ats-border));
+  color: hsl(var(--ats-fg));
+  border-radius: 999px;
+  padding: 0 0.5rem;
+  font-size: 0.68rem;
+}
+.landing-ats .ats-candidate-card {
+  background: #fff;
+  border: 1px solid hsl(var(--ats-border));
+  border-radius: 0.6rem;
+  padding: 0.65rem 0.75rem;
+  margin-bottom: 0.6rem;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+}
+.landing-ats .ats-candidate-name { font-size: 0.82rem; font-weight: 600; margin-bottom: 0.15rem; }
+.landing-ats .ats-candidate-role { font-size: 0.72rem; color: hsl(var(--ats-muted-fg)); margin-bottom: 0.5rem; }
+.landing-ats .ats-score-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: 0.68rem;
+  font-weight: 700;
+  padding: 0.1rem 0.5rem;
+  border-radius: 999px;
+  background: hsl(var(--ats-primary) / 0.12);
+  color: hsl(var(--ats-primary-600, var(--ats-primary)));
+}
+
+/* Animations */
+@keyframes ats-fade-up { from { opacity: 0; transform: translateY(22px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes ats-fade-in { from { opacity: 0; } to { opacity: 1; } }
+@keyframes ats-float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-12px); } }
+@keyframes ats-spin { from { transform: rotate(0); } to { transform: rotate(360deg); } }
+.landing-ats .ats-animate-fade-up { animation: ats-fade-up 0.6s ease-out both; }
+.landing-ats .ats-animate-fade-in { animation: ats-fade-in 0.6s ease-out both; }
+.landing-ats .ats-animate-float { animation: ats-float 4s ease-in-out infinite; }
+.landing-ats .ats-spin { animation: ats-spin 1s linear infinite; }
+
+/* Responsive grids toggled via media queries per section */
+@media (min-width: 768px) {
+  .landing-ats .ats-grid-2 { grid-template-columns: 1fr 1fr !important; }
+}
+@media (min-width: 900px) {
+  .landing-ats .ats-grid-3 { grid-template-columns: repeat(3, 1fr) !important; }
+}
+@media (min-width: 640px) {
+  .landing-ats .ats-kanban { grid-template-columns: repeat(4, 1fr); }
+}
+@media (max-width: 639px) {
+  .landing-ats .ats-kanban { grid-template-columns: repeat(4, 80vw); }
+}
+
+/* Process flow (8 steps in 2 rows, connected by arrows). Stacked and
+   arrow-down on mobile; side-by-side with right arrows from tablet up. */
+.landing-ats .ats-flow {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 68rem;
+  margin: 0 auto;
+}
+.landing-ats .ats-flow-row {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+.landing-ats .ats-flow-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+.landing-ats .ats-flow-node {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  background: hsl(var(--ats-card));
+  border: 1px solid hsl(var(--ats-border));
+  border-radius: 1rem;
+  padding: 1.5rem 1.25rem;
+  width: 100%;
+  max-width: 16rem;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+.landing-ats .ats-flow-icon {
+  position: relative;
+  width: 3.25rem;
+  height: 3.25rem;
+  border-radius: 999px;
+  background: hsl(var(--ats-primary) / 0.12);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 0.85rem;
+}
+.landing-ats .ats-flow-badge {
+  position: absolute;
+  top: -0.35rem;
+  right: -0.35rem;
+  width: 1.4rem;
+  height: 1.4rem;
+  border-radius: 999px;
+  background: hsl(var(--ats-primary));
+  color: #fff;
+  font-size: 0.68rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 0 3px hsl(var(--ats-muted));
+}
+.landing-ats .ats-flow-title { font-size: 1rem; margin-bottom: 0.35rem; }
+.landing-ats .ats-flow-desc { font-size: 0.85rem; color: hsl(var(--ats-muted-fg)); line-height: 1.5; }
+.landing-ats .ats-flow-arrow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: hsl(var(--ats-primary));
+  padding: 0.35rem 0;
+}
+.landing-ats .ats-flow-arrow-h { display: none; }
+.landing-ats .ats-flow-arrow-v { display: block; }
+.landing-ats .ats-flow-connector {
+  display: flex;
+  justify-content: center;
+  color: hsl(var(--ats-primary));
+  padding: 0.35rem 0;
+}
+
+@media (min-width: 860px) {
+  .landing-ats .ats-flow-row { flex-direction: row; align-items: stretch; justify-content: center; }
+  .landing-ats .ats-flow-item { flex-direction: row; align-items: center; width: auto; }
+  .landing-ats .ats-flow-node { max-width: 14rem; }
+  .landing-ats .ats-flow-arrow { padding: 0 0.5rem; }
+  .landing-ats .ats-flow-arrow-h { display: block; }
+  .landing-ats .ats-flow-arrow-v { display: none; }
+}
