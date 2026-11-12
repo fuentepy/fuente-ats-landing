@@ -38,6 +38,11 @@ try {
       assert.ok(sizes.scroll<=sizes.client,`Desborde a ${width}: ${JSON.stringify(sizes)}`);
     };
     await noOverflow();
+    const primary = page.getByRole('link', { name: 'Comenzar prueba gratuita', exact: true });
+    assert.equal(await primary.count(), 4);
+    for (const action of await primary.all()) assert.equal(await action.getAttribute('href'), 'https://app.fuentehr.com/auth/signup');
+    const history = page.locator('#modalidades');
+    assert.equal(await history.getByText('Ejemplo ilustrativo, no es un caso de cliente', {exact:true}).count(), 1);
     // Cada href local apunta a un id existente; los externos pertenecen al contrato explícito.
     const hrefs=await page.locator('a[href]').evaluateAll(links=>links.map(a=>a.getAttribute('href')));
     for(const href of hrefs){
@@ -64,6 +69,8 @@ try {
     await page.evaluate(() => { if(document.activeElement instanceof HTMLElement)document.activeElement.blur();window.scrollTo(0,0); });
     await page.screenshot({path:`artifacts/landing-${width}.png`,fullPage:true});
     await page.screenshot({path:`artifacts/landing-${width}-inicio.png`});
+    await history.screenshot({path:`artifacts/landing-${width}-historia.png`, style:'.ats-header { visibility: hidden; }'});
+    await noOverflow();
     const fill=async()=>{
       await page.getByLabel('Nombre completo').fill('Persona sintética');await page.getByLabel('Empresa *',{exact:true}).fill('Empresa de prueba');
       await page.getByLabel('Correo *',{exact:true}).fill('demo@example.invalid');await page.getByLabel('¿Cómo trabajan?').selectOption('rrhh_interno');

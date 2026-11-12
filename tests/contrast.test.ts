@@ -18,7 +18,7 @@ it('WCAG usa los tokens reales: botones, texto grande y texto de cuerpo',()=>{
     const gradient=primary.map((c,j)=>c+(secondary[j]-c)*i/100);
     buttonRatios.push(ratio(gradient,white));titleRatios.push(ratio(gradient,muted));
   }
-  expect(Math.min(...buttonRatios)).toBeGreaterThanOrEqual(4.5);expect(Math.min(...titleRatios)).toBeGreaterThanOrEqual(3);
+  expect(Math.min(...buttonRatios)).toBeGreaterThanOrEqual(4.5);expect(Math.min(...titleRatios)).toBeGreaterThanOrEqual(4.5);
   for(const fg of ['fg','muted-fg'])for(const bg of ['bg','muted'])expect(ratio(color(fg),color(bg))).toBeGreaterThanOrEqual(4.5);
   const eyebrowBg=primary.map((v,i)=>v*.08+white[i]*.92);expect(ratio(primary,eyebrowBg)).toBeGreaterThanOrEqual(4.5);
   expect(ratio(color('control-border'),white)).toBeGreaterThanOrEqual(3);
