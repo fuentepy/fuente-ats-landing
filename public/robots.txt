@@ -13,4 +13,4 @@ Allow: /
 User-agent: *
 Allow: /
 
-Sitemap: https://fuentehr.com/sitemap.xml
+Sitemap: https://www.fuentehr.com/sitemap.xml
