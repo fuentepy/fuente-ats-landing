@@ -1,3 +1,4 @@
+import { APP_LINKS } from "@/lib/links";
 const modes = [
   {
     title: 'Consultora de selección',
@@ -24,12 +25,13 @@ const modes = [
     benefits: ['Áreas con sus propios responsables', 'Responsables de contratación asignados por proceso', 'Búsquedas activas sin publicación pública', 'Perfiles compartidos por etapa'],
   },
 ];
-export const AtsAudience = () => <section id="modalidades" className="ats-section">
+export const AtsAudience = () => <section id="modalidades" className="ats-section" aria-labelledby="historia-titulo" aria-describedby="historia-aviso">
   <div className="ats-container">
-    <div className="ats-section-heading"><span className="ats-eyebrow">Dos formas de trabajar</span><h2>Así se ve un proceso, de la solicitud a la contratación</h2><p id="historia-aviso">Ejemplo ilustrativo, no es un caso de cliente</p></div>
+    <div className="ats-section-heading"><span className="ats-eyebrow">Dos formas de trabajar</span><h2 id="historia-titulo">Así se ve un proceso, de la solicitud a la contratación</h2><p id="historia-aviso">Ejemplo ilustrativo, no es un caso de cliente</p></div>
     <div className="ats-grid-2 ats-grid">{modes.map(mode => <article className="ats-card" key={mode.title}>
       <h3>{mode.title}</h3><ul className="ats-benefits">{mode.benefits.map(b => <li key={b}>{b}</li>)}</ul>
-      <ol className="ats-mode-steps">{mode.steps.map(([title, text]) => <li key={title}><strong>{title}</strong><p>{text}</p></li>)}</ol>
+      <div>{[0, 2, 4].map(start => <p key={start}>{mode.steps.slice(start, start + 2).map(([, text]) => text).join(' ')}</p>)}</div>
     </article>)}</div>
+    <div className="ats-actions"><a href={APP_LINKS.signup} className="ats-btn-gradient">Comenzar prueba gratuita</a><a href="#contacto-ats" className="ats-btn-outline">Agendar una demo</a></div>
   </div>
 </section>;

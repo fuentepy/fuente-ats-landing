@@ -51,5 +51,10 @@ export const AtsCtaForm = () => {
       </form>}
       <aside className="ats-card ats-contact-aside"><h3>¿Preferís hablar directo?</h3><p>Escribinos para coordinar una demo.</p><a href={APP_LINKS.contact}>contacto@fuentehr.com</a><a href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer">+595 994 349 323 (WhatsApp)</a><h3>Qué podemos recorrer</h3><ul><li>Vacantes, candidatos y pipeline</li><li>Lectura de CVs con apoyo de IA</li><li>Colaboración con clientes o responsables de contratación</li></ul></aside>
     </div>
+    <div className="ats-control-note">
+      <h3>Tu próxima búsqueda empieza acá</h3>
+      <p>Creá tu empresa con un correo de empresa y confirmá tu correo. Elegí cómo trabajás —consultora o RRHH interno— y seguí la guía de puesta en marcha.</p>
+      <div className="ats-actions"><a href={APP_LINKS.signup} className="ats-btn-gradient">Comenzar prueba gratuita</a></div>
+    </div>
   </div></section>;
 };
