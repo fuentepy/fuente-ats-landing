@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Menu, X } from "lucide-react";
-import logo from "@/assets/landing/logo-fuentepy-color.png";
+const logo = "/logo-fuentehr-light.png";
 
 const links = [
   { id: "beneficios", label: "Beneficios" },
@@ -51,10 +51,8 @@ export const AtsNav = () => {
     >
       <div className="ats-container" style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: "0.75rem", paddingTop: "1rem", paddingBottom: "1rem" }}>
         <div style={{ display: "flex", alignItems: "center", gap: "0.6rem", minWidth: 0, flexShrink: 1 }}>
-          <img src={logo} alt="FuentePy" style={{ height: "2rem", width: "auto", flexShrink: 0 }} />
-          <span style={{ fontWeight: 700, fontSize: "1rem", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
-            ATS <span className="ats-text-gradient">Reclutamiento</span>
-          </span>
+          <img src={logo} alt="FuenteHR" style={{ height: "2rem", width: "auto", flexShrink: 0 }} />
+
         </div>
 
         <div style={{ display: "none", alignItems: "center", gap: "2rem" }} className="ats-nav-links">
