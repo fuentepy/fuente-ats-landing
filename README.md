@@ -24,9 +24,35 @@ git diff --check
 formulario. También comprueba el resumen sin JavaScript. Las capturas quedan en
 `artifacts/` (ignorado por Git). No prueba la entrega real de correos.
 
-Si no tenés Chromium del sistema, podés usar `npx playwright install chromium` y
-omitir `PW_CHROMIUM_PATH`. La generación de Open Graph usa una plantilla HTML
-local y el logo embebido: no depende de recursos externos ni de URLs `file://`.
+### Elegir Chromium para `test:browser`
+
+`PW_CHROMIUM_PATH` es una variable local de las herramientas de prueba: indica
+la ruta al ejecutable de Chromium y se pasa a Playwright como `executablePath`.
+No es una variable de Vercel ni se incorpora al sitio. Si ya tenés Chromium del
+sistema, usá su ruta real, por ejemplo:
+
+```sh
+npm run build
+PW_CHROMIUM_PATH=/usr/bin/chromium npm run test:browser
+```
+
+Sin esa variable, Playwright busca **su propia versión de Chromium** en su caché.
+Tener otra versión instalada (del sistema o de otro Playwright) no alcanza y
+puede producir `Executable doesn't exist`. Para usar el navegador administrado
+por la versión de Playwright de este proyecto:
+
+```sh
+npx playwright install chromium
+npm run build
+npm run test:browser
+```
+
+La instalación del navegador requiere red; el **test es 100% local**: solo abre
+localhost, bloquea la red externa y simula `/api/contact-lead`, sin enviar correos
+ni tocar sitios desplegados. No requiere claves de Resend ni Turnstile.
+
+`generate:og` también admite `PW_CHROMIUM_PATH`. Usa una plantilla HTML local y
+el logo embebido: no depende de recursos externos ni de URLs `file://`.
 
 **No envíes formularios de despliegues para probar**: incluso un preview podría
 tener una clave real de Resend. Vite dev/preview no ejecuta funciones `/api`;
