@@ -1,37 +1,35 @@
-import { Building2, Handshake } from "lucide-react";
-
-const audiences = [
+const modes = [
   {
-    icon: Building2,
-    title: "Para Equipos Internos de RRHH",
-    description: "Fortalece tu Employer Branding, centraliza tu base de datos y mejora la experiencia de los candidatos desde el día uno.",
+    title: 'Consultora de selección',
+    steps: [
+      ['Solicitud del cliente', 'Recibí el pedido del perfil que necesita.'],
+      ['Propuesta comercial, cuando corresponde', 'Presentala antes de la vacante. Es opcional si creás la vacante directamente.'],
+      ['Vacante', 'Organizá la búsqueda y decidí si la publicás.'],
+      ['Selección', 'Revisá perfiles y avanzá por las etapas del proceso.'],
+      ['Colaboración con el cliente', 'Compartí perfiles por etapa, comentarios y evaluaciones en el portal.'],
+      ['Contratación', 'Registrá el cierre del proceso.'],
+    ],
+    benefits: ['Clientes en un mismo lugar', 'Solicitudes de nuevos perfiles', 'Propuestas comerciales antes de la vacante', 'Portal para colaborar con cada cliente'],
   },
   {
-    icon: Handshake,
-    title: "Para Consultoras y Outsourcing",
-    description: "Gestiona múltiples clientes con facilidad, comparte shortlists con un clic en el portal del cliente y cierra más posiciones en menos tiempo.",
+    title: 'Equipo de RRHH interno',
+    steps: [
+      ['Solicitud del área', 'El responsable pide una búsqueda para su área.'],
+      ['Revisión de RRHH', 'Al aprobarla, RRHH crea la vacante en borrador.'],
+      ['Vacante', 'Mantenela activa sin publicarla si la búsqueda es interna.'],
+      ['Selección', 'RRHH revisa candidatos y avanza por las etapas.'],
+      ['Perfiles compartidos', 'Los responsables asignados ven perfiles en las etapas compartidas. Proponen horarios de entrevista y RRHH los confirma.'],
+      ['Evaluación y contratación', 'Reuní las evaluaciones y registrá la decisión.'],
+    ],
+    benefits: ['Áreas con sus propios responsables', 'Responsables de contratación asignados por proceso', 'Búsquedas activas sin publicación pública', 'Perfiles compartidos por etapa'],
   },
 ];
-
-export const AtsAudience = () => {
-  return (
-    <section className="ats-section" style={{ paddingBottom: "0" }}>
-      <div className="ats-container">
-        <div className="ats-grid-2" style={{ display: "grid", gridTemplateColumns: "1fr", gap: "1.5rem", maxWidth: "60rem", margin: "0 auto" }}>
-          {audiences.map((a, idx) => {
-            const Icon = a.icon;
-            return (
-              <div key={a.title} className="ats-card ats-animate-fade-up" style={{ animationDelay: `${idx * 0.1}s` }}>
-                <div style={{ width: "3rem", height: "3rem", borderRadius: "0.75rem", background: "hsl(var(--ats-primary) / 0.12)", display: "flex", alignItems: "center", justifyContent: "center", marginBottom: "1.25rem" }}>
-                  <Icon size={24} color="hsl(var(--ats-primary))" />
-                </div>
-                <h3 style={{ fontSize: "1.15rem", marginBottom: "0.6rem" }}>{a.title}</h3>
-                <p style={{ color: "hsl(var(--ats-muted-fg))", fontSize: "0.95rem", lineHeight: 1.6 }}>{a.description}</p>
-              </div>
-            );
-          })}
-        </div>
-      </div>
-    </section>
-  );
-};
+export const AtsAudience = () => <section id="modalidades" className="ats-section">
+  <div className="ats-container">
+    <div className="ats-section-heading"><span className="ats-eyebrow">Dos formas de trabajar</span><h2>Un recorrido para tu equipo</h2><p>Elegí la modalidad al comenzar y seguí la guía de puesta en marcha.</p></div>
+    <div className="ats-grid-2 ats-grid">{modes.map(mode => <article className="ats-card" key={mode.title}>
+      <h3>{mode.title}</h3><ul className="ats-benefits">{mode.benefits.map(b => <li key={b}>{b}</li>)}</ul>
+      <ol className="ats-mode-steps">{mode.steps.map(([title, text]) => <li key={title}><strong>{title}</strong><p>{text}</p></li>)}</ol>
+    </article>)}</div>
+  </div>
+</section>;

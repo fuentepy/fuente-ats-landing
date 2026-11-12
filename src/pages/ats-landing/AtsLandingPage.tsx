@@ -4,7 +4,7 @@ import { AtsHero } from "./AtsHero";
 import { AtsAudience } from "./AtsAudience";
 import { AtsFeatures } from "./AtsFeatures";
 import { AtsShowcase } from "./AtsShowcase";
-import { AtsProcessFlow } from "./AtsProcessFlow";
+import { AtsTrialAndFaq } from "./AtsTrialAndFaq";
 import { AtsHowItWorks } from "./AtsHowItWorks";
 import { AtsCtaForm } from "./AtsCtaForm";
 import { AtsFooter } from "./AtsFooter";
@@ -14,13 +14,15 @@ export default function AtsLandingPage() {
   return (
     <div className="landing-ats">
       <AtsNav />
+      <main id="contenido" tabIndex={-1}>
       <AtsHero />
       <AtsAudience />
       <AtsFeatures />
       <AtsShowcase />
-      <AtsProcessFlow />
       <AtsHowItWorks />
+      <AtsTrialAndFaq />
       <AtsCtaForm />
+      </main>
       <AtsFooter />
     </div>
   );
