@@ -20,7 +20,7 @@ export const AtsNav = () => {
     window.addEventListener('keydown', escape);
     return () => { window.removeEventListener('resize', resize); window.removeEventListener('keydown', escape); };
   }, [menuOpen]);
-  const navigation = (mobile = false) => <>
+  const navigation = () => <>
     {links.map(link => <a key={link.id} href={`#${link.id}`} onClick={() => setMenuOpen(false)}>{link.label}</a>)}
     <a href={APP_LINKS.login}>Iniciar sesión</a>
     <a href={APP_LINKS.signup} className="ats-btn-gradient">Crear empresa</a>
@@ -34,6 +34,6 @@ export const AtsNav = () => {
         {menuOpen ? <X aria-hidden="true" size={24} /> : <Menu aria-hidden="true" size={24} />}
       </button>
     </div>
-    <nav id="menu-movil" aria-label="Navegación móvil" className="ats-container ats-nav-mobile" hidden={!menuOpen}>{navigation(true)}</nav>
+    <nav id="menu-movil" aria-label="Navegación móvil" className="ats-container ats-nav-mobile" hidden={!menuOpen}>{navigation()}</nav>
   </header>;
 };
