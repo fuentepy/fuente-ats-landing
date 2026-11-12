@@ -46,3 +46,19 @@ it('metadatos estáticos son la única fuente de verdad y el canónico usa www',
   expect(index).toContain('<noscript>');expect(index).not.toContain('user-scalable=no');
   for(const file of ['public/robots.txt','public/sitemap.xml'])expect(readFileSync(file,'utf8')).toContain('https://www.fuentehr.com/');
 });
+
+it('corrige pipeline general, acceso a usuarios y período de gracia en ambos textos',()=>{
+  const page=html();
+  const hero=page.match(/<section id="inicio"[^>]*>([\s\S]*?)<\/section>/)?.[1] ?? '';
+  const features=page.match(/<section id="funciones"[^>]*>([\s\S]*?)<\/section>/)?.[1] ?? '';
+  expect(hero).toContain('Definí las etapas de tu proceso de selección');
+  expect(features).toContain('Pipeline configurable');
+  expect(features).toContain('Definí las etapas de tu empresa y seguí el avance de las postulaciones de todas tus vacantes.');
+  expect(`${hero} ${features}`).not.toContain('por vacante');
+  expect(page).not.toContain('Un tablero por vacante');
+  expect(page).toContain('Un tablero de postulaciones por etapa, que podés filtrar por vacante, cliente y estado.');
+  expect(page).not.toContain('Configuración → Usuarios');
+  expect(page).toContain('El dueño o administrador crea las cuentas desde Organización → Crear Usuario.');
+  const grace='Al vencer se restringe crear vacantes, sumar personal y usar IA, tras el período de gracia aplicable. Tus datos se conservan.';
+  expect(page.split(grace)).toHaveLength(3);
+});

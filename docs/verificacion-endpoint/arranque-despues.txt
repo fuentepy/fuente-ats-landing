@@ -1,0 +1,3 @@
+OPTIONS 204: aprobado, sin CORS permisivo
+GET 405: aprobado, sin CORS permisivo
+Arranque Node ESM nativo: aprobado
