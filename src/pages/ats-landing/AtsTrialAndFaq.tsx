@@ -11,7 +11,7 @@ export const AtsTrialAndFaq = () => <>
   <section id="prueba-gratuita" className="ats-section"><div className="ats-container ats-trial">
     <h2>Probá FuenteHR con tu empresa</h2><p>La prueba gratuita no se convierte automáticamente en una suscripción paga ni autoriza cargos. La continuidad paga requiere contratación expresa.</p>
     <p>Al vencer, tras el período de gracia aplicable, se restringe crear vacantes, sumar personal y usar IA. Tus datos se conservan. En el registro ves los días y los límites vigentes.</p>
-    <p>Necesitás un correo de empresa: no se aceptan Gmail, Hotmail, Yahoo ni otros correos personales similares.</p>
+    <p>Usá un correo de empresa para registrarte.</p>
     <div className="ats-actions"><a href={APP_LINKS.signup} className="ats-btn-gradient">Comenzar prueba gratuita</a><a href={APP_LINKS.legal}>Términos y privacidad</a></div>
   </div></section>
   <section id="preguntas" className="ats-section ats-muted-bg"><div className="ats-container ats-faq">
