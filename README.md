@@ -132,3 +132,11 @@ y el merge a main (que publica la web). No se cambió `vercel.json`, DNS ni domi
 
 Ver [decisiones y validación de la etapa 1](docs/web-fuentehr-etapa-1.md), incluyendo
 revisión legal pendiente, condiciones de prueba y límites de lo ejecutado.
+
+## Reescritura comercial
+
+La [tabla de respaldo de afirmaciones](docs/respaldo-de-afirmaciones.md) documenta
+la evidencia del producto, los textos descartados, las preguntas pendientes y la
+validación local de la reescritura AIDA. Incluye capturas de la primera pantalla
+y la historia ilustrativa en 1440 y 390 px. No se atribuyen resultados comerciales
+medidos ni se presentan casos de clientes.
