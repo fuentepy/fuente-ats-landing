@@ -100,6 +100,7 @@ try {
       await enlarge.focus();await page.keyboard.press('Enter');
       const viewer=page.getByRole('dialog',{name:screens[i].label,exact:true});await viewer.waitFor();
       const close=viewer.getByRole('button',{name:'Cerrar captura'});
+      assert.equal(await viewer.getByRole('region',{name:'Captura ampliada'}).evaluate(el=>el.scrollLeft===0&&el.scrollTop===0),true);
       assert.equal(await close.evaluate(el=>el===document.activeElement),true);
       const largeImage=viewer.getByRole('img');await largeImage.evaluate(img=>img.decode());
       assert.ok((await largeImage.evaluate(img=>img.currentSrc)).endsWith(`${screens[i].file}-oscuro-1600.webp`));
@@ -109,7 +110,9 @@ try {
       if(i===0)await page.screenshot({path:`artifacts/landing-${width}-captura-ampliada.png`});
       await page.keyboard.press('Escape');assert.equal(await viewer.isVisible(),false);
       assert.equal(await enlarge.evaluate(el=>el===document.activeElement),true);
-      await page.keyboard.press('Space');await viewer.waitFor();await close.click();assert.equal(await viewer.isVisible(),false);
+      await page.keyboard.press('Space');await viewer.waitFor();
+      assert.equal(await viewer.getByRole('region',{name:'Captura ampliada'}).evaluate(el=>el.scrollLeft===0&&el.scrollTop===0),true);
+      await close.click();assert.equal(await viewer.isVisible(),false);
     }
     await tabs.nth(2).focus();
     for(const [key,index] of [['Home',0],['End',2],['ArrowRight',0],['ArrowLeft',2],['ArrowLeft',1],['ArrowLeft',0],['ArrowRight',1],['ArrowRight',2],['Home',0]]){

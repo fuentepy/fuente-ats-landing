@@ -22,6 +22,7 @@ const screens = [
 export const AtsShowcase = () => {
   const [active, setActive] = useState(0);
   const viewer = useRef<HTMLDialogElement>(null);
+  const captureScroll = useRef<HTMLDivElement>(null);
   const tabs = useRef<Array<HTMLButtonElement | null>>([]);
   const onKeyDown = (event: KeyboardEvent<HTMLButtonElement>, index: number) => {
     const next = event.key === 'ArrowRight' ? (index + 1) % screens.length
@@ -59,7 +60,7 @@ export const AtsShowcase = () => {
                 <span className="ats-showcase-dots" aria-hidden="true"><i /><i /><i /></span>
                 <span>Capturas con datos de ejemplo</span>
               </div>
-              <button type="button" className="ats-capture-open" aria-label={`Ampliar captura: ${screen.label}`} aria-haspopup="dialog" aria-controls="ats-capture-dialog" onClick={() => viewer.current?.showModal()}>
+              <button type="button" className="ats-capture-open" aria-label={`Ampliar captura: ${screen.label}`} aria-haspopup="dialog" aria-controls="ats-capture-dialog" onClick={() => { viewer.current?.showModal(); captureScroll.current?.scrollTo(0, 0); }}>
               <picture>
                 <source media="(max-width: 720px)" srcSet={`/capturas/${screen.file}-oscuro-movil-900.webp`} width="900" height="617" />
                 <img src={`/capturas/${screen.file}-oscuro-1600.webp`}
@@ -76,7 +77,7 @@ export const AtsShowcase = () => {
         <dialog ref={viewer} id="ats-capture-dialog" className="ats-capture-dialog" aria-labelledby="ats-capture-title" aria-describedby="ats-capture-description" onClick={event => { if (event.target === event.currentTarget) viewer.current?.close(); }}>
           <div className="ats-capture-dialog-heading"><h2 id="ats-capture-title">{screens[active].label}</h2><button type="button" className="ats-capture-close" aria-label="Cerrar captura" autoFocus onClick={() => viewer.current?.close()}><X size={23} aria-hidden="true" /></button></div>
           <p id="ats-capture-description">Capturas con datos de ejemplo. Desplazate por la imagen para ver los detalles.</p>
-          <div className="ats-capture-scroll" role="region" aria-label="Captura ampliada" tabIndex={0}><img src={`/capturas/${screens[active].file}-oscuro-1600.webp`} width="1600" height="914" alt={screens[active].alt} loading="lazy" decoding="async" /></div>
+          <div ref={captureScroll} className="ats-capture-scroll" role="region" aria-label="Captura ampliada" tabIndex={0}><img src={`/capturas/${screens[active].file}-oscuro-1600.webp`} width="1600" height="914" alt={screens[active].alt} loading="lazy" decoding="async" /></div>
         </dialog>
       </div>
     </div>
