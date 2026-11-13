@@ -1,5 +1,5 @@
 const features = [
-  ['Pipeline configurable por vacante', 'Adaptá las etapas a cada búsqueda y seguí el avance de las postulaciones.'],
+  ['Pipeline configurable', 'Definí las etapas de tu empresa y seguí el avance de las postulaciones de todas tus vacantes.'],
   ['CVs con apoyo de IA', 'Usá la lectura de CVs como ayuda. Puede dar resultados incompletos: revisá la información antes de decidir.'],
   ['Colaboración con el cliente', 'El cliente ve sus vacantes y los perfiles compartidos según la etapa. Puede comentar, proponer horarios, descartar con motivo, evaluar entrevistas, pedir nuevos perfiles y responder propuestas comerciales.'],
   ['Áreas y responsables de contratación', 'En RRHH interno, asigná responsables a los procesos y compartí perfiles por etapa. Los responsables proponen horarios de entrevista y RRHH los confirma.'],

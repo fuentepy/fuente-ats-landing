@@ -1,6 +1,6 @@
 import { APP_LINKS } from "@/lib/links";
 const capabilities = [
-  ['Pipeline configurable', 'Organizá las etapas de cada vacante.'],
+  ['Pipeline configurable', 'Definí las etapas de tu proceso de selección.'],
   ['Lectura de CVs con IA', 'Una herramienta de apoyo que una persona revisa.'],
   ['Portal de colaboración', 'Con clientes y responsables de contratación.'],
 ];
