@@ -1,9 +1,74 @@
-export const AtsShowcase = () => <section id="producto" className="ats-section">
-  <div className="ats-container">
-    <div className="ats-section-heading"><h2>Seguí el avance de cada búsqueda</h2><p>Un tablero de postulaciones por etapa, que podés filtrar por vacante, cliente y estado.</p></div>
-    <figure className="ats-product-illustration">
-      <figcaption>Ilustración con datos de ejemplo</figcaption>
-      <div className="ats-example-stages">{['Revisión de perfiles', 'Conversaciones', 'Decisión'].map((stage,i) => <div key={stage}><strong>{stage}</strong><div className="ats-example-profile">Perfil de ejemplo {i+1}<p>Información para revisar</p></div></div>)}</div>
-    </figure>
-  </div>
-</section>;
+import { useRef, useState, type KeyboardEvent } from 'react';
+
+const screens = [
+  {
+    id: 'tablero', file: 'tablero', label: 'Tablero de postulaciones', audience: 'Consultoras y equipos de RRHH',
+    caption: 'Seguí cada postulación por etapa y filtrá por cliente, vacante o estado.',
+    alt: 'Tablero de postulaciones de FuenteHR con columnas por etapa (Postulado, Revisión CV, Entrevista y Entrevista Cliente) y tarjetas de candidatos de ejemplo.',
+  },
+  {
+    id: 'portal', file: 'portal-cliente', label: 'Portal del cliente', audience: 'Consultoras',
+    caption: 'Tu cliente ve sus vacantes y los perfiles que compartís en cada etapa.',
+    alt: 'Vista del portal del cliente con el detalle de una vacante y la lista de postulaciones compartidas, cada una con su etapa.',
+  },
+  {
+    id: 'solicitudes', file: 'solicitudes-rrhh', label: 'Solicitudes de las áreas', audience: 'Equipos de RRHH interno',
+    caption: 'RRHH revisa los pedidos de vacante de cada área y decide cuáles aprobar.',
+    alt: 'Listado de solicitudes de vacante de las áreas, con puesto, área, urgencia, estado y fecha.',
+  },
+];
+
+export const AtsShowcase = () => {
+  const [active, setActive] = useState(0);
+  const tabs = useRef<Array<HTMLButtonElement | null>>([]);
+  const onKeyDown = (event: KeyboardEvent<HTMLButtonElement>, index: number) => {
+    const next = event.key === 'ArrowRight' ? (index + 1) % screens.length
+      : event.key === 'ArrowLeft' ? (index + screens.length - 1) % screens.length
+      : event.key === 'Home' ? 0 : event.key === 'End' ? screens.length - 1 : null;
+    if (next === null) return;
+    event.preventDefault();
+    setActive(next);
+    tabs.current[next]?.focus();
+  };
+
+  return <section id="producto" className="ats-section" aria-labelledby="ats-showcase-title">
+    <div className="ats-container">
+      <div className="ats-section-heading"><h2 id="ats-showcase-title">Seguí el avance de cada búsqueda</h2><p>Capturas con datos de ejemplo</p></div>
+      <div className="ats-showcase">
+        <div className="ats-showcase-tabs" role="tablist" aria-label="Pantallas de FuenteHR">
+          {screens.map((screen, index) => <button
+            key={screen.id} ref={element => { tabs.current[index] = element; }}
+            type="button" role="tab" id={`ats-tab-${screen.id}`} className="ats-showcase-tab"
+            aria-selected={active === index} aria-controls={`ats-panel-${screen.id}`}
+            aria-labelledby={`ats-tab-label-${screen.id}`} aria-describedby={`ats-tab-audience-${screen.id}`}
+            tabIndex={active === index ? 0 : -1} onClick={() => setActive(index)} onKeyDown={event => onKeyDown(event, index)}
+          >
+            <span id={`ats-tab-label-${screen.id}`} className="ats-showcase-tab-label">{screen.label}</span>
+            <span id={`ats-tab-audience-${screen.id}`} className="ats-showcase-tab-audience">{screen.audience}</span>
+          </button>)}
+        </div>
+        {screens.map((screen, index) => <div
+          key={screen.id} role="tabpanel" id={`ats-panel-${screen.id}`} aria-labelledby={`ats-tab-${screen.id}`}
+          className="ats-showcase-panel" hidden={active !== index} tabIndex={0}
+        >
+          <figure>
+            <div className="ats-showcase-browser">
+              <div className="ats-showcase-browser-bar">
+                <span className="ats-showcase-dots" aria-hidden="true"><i /><i /><i /></span>
+                <span>Capturas con datos de ejemplo</span>
+              </div>
+              <picture>
+                <source media="(max-width: 720px)" srcSet={`/capturas/${screen.file}-oscuro-movil-900.webp`} width="900" height="617" />
+                <img src={`/capturas/${screen.file}-oscuro-1600.webp`}
+                  srcSet={`/capturas/${screen.file}-oscuro-800.webp 800w, /capturas/${screen.file}-oscuro-1600.webp 1600w`}
+                  sizes="(min-width: 1200px) 1100px, (min-width: 721px) 92vw, calc(100vw - 2.5rem)"
+                  width="1600" height="914" alt={screen.alt} loading="lazy" decoding="async" />
+              </picture>
+            </div>
+            <figcaption>{screen.caption}</figcaption>
+          </figure>
+        </div>)}
+      </div>
+    </div>
+  </section>;
+};
