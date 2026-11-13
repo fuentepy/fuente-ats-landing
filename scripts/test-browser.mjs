@@ -20,6 +20,24 @@ async function blockExternal(page,localHandler){
   });
 }
 async function noOverflow(page){assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),'Desborde horizontal');}
+async function verifyControlNote(page,theme,width){
+  const note=page.locator('.ats-control-note'),detail=note.locator('details'),heading=note.getByRole('heading',{level:3});
+  assert.equal(await detail.evaluate(el=>el.open),false);
+  await note.scrollIntoViewIfNeeded();
+  const measure=()=>note.evaluate(el=>{const h=el.querySelector('h3').getBoundingClientRect(),outer=el.getBoundingClientRect();return {width:h.width,top:h.top-outer.top};});
+  const before=await measure();
+  const summary=detail.locator('summary');await summary.focus();await page.keyboard.press('Enter');
+  const paragraph=detail.locator('p');await paragraph.waitFor();
+  await note.screenshot({path:`artifacts/control-note-${theme}-${width}-open.png`,style:'.ats-header { visibility:hidden !important; }'});
+  const after=await measure();
+  assert.ok(Math.abs(before.width-after.width)<=1,`El detalle cambió el ancho del título: ${before.width} -> ${after.width} (${theme}, ${width}px)`);
+  assert.ok(Math.abs(before.top-after.top)<=1,'El título saltó al expandir el detalle');
+  assert.ok(await note.evaluate(el=>[...el.querySelectorAll('h3,ul,details,p')].every(child=>{const r=child.getBoundingClientRect(),outer=el.getBoundingClientRect();return r.left>=outer.left&&r.right<=outer.right;})),'Contenido fuera del aviso');
+  assert.ok(await paragraph.evaluate(el=>el.scrollWidth<=el.clientWidth),'Texto recortado dentro del aviso');
+  await noOverflow(page);await page.keyboard.press('Space');
+  assert.equal(await detail.evaluate(el=>el.open),false);
+  assert.equal(await summary.evaluate(el=>el===document.activeElement),true);
+}
 async function assertTheme(page,theme){
   await page.waitForFunction(theme=>document.documentElement.getAttribute('data-web-theme')===theme,theme);
   const logo=theme==='light'?'/logo-fuentehr-light.png':'/logo-fuentehr.png';
@@ -119,6 +137,7 @@ try{
       assert.equal(await detail.evaluate(el=>el.open),false);await detail.locator('summary').focus();await page.keyboard.press('Enter');
       assert.equal(await detail.evaluate(el=>el.open),true);await noOverflow(page);await page.keyboard.press('Space');assert.equal(await detail.evaluate(el=>el.open),false);
     }
+    await verifyControlNote(page,theme,width);
     const conditions=page.locator('#prueba-gratuita details');await conditions.locator('summary').click();assert.equal(await conditions.evaluate(el=>el.open),true);await conditions.locator('summary').click();
     await page.evaluate(()=>{if(document.activeElement instanceof HTMLElement)document.activeElement.blur();window.scrollTo(0,0);});
     await page.screenshot({path:`artifacts/landing-${theme}-${width}.png`,fullPage:true,animations:'disabled'});
@@ -143,6 +162,7 @@ try{
   for(const theme of ['dark','light'])for(const width of [320,768,1024]){
     const page=await browser.newPage({viewport:{width,height:900},reducedMotion:'reduce'});await page.addInitScript(theme=>localStorage.setItem('fuentehr-web-theme',theme),theme);await blockExternal(page);
     await page.goto(base);await page.getByRole('heading',{level:1}).waitFor();await assertTheme(page,theme);await noOverflow(page);
+    await verifyControlNote(page,theme,width);
     for(const control of await page.locator('.ats-header-actions > *').all())if(await control.isVisible())assert.ok(await control.evaluate(el=>{const r=el.getBoundingClientRect();return r.left>=0&&r.right<=innerWidth;}));
     await page.screenshot({path:`artifacts/landing-${theme}-${width}-inicio.png`,animations:'disabled'});console.log(`APROBADO responsive ${theme} ${width}px.`);await page.close();
   }

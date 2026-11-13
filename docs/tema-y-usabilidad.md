@@ -104,3 +104,24 @@ Solo se versionan ocho capturas; las demás se generan en artifacts, ignorado.
 | Portada móvil | [Ver](capturas/tema-y-usabilidad/landing-dark-390-inicio.png) | [Ver](capturas/tema-y-usabilidad/landing-light-390-inicio.png) |
 | Página completa | [Ver](capturas/tema-y-usabilidad/landing-dark-1440.png) | [Ver](capturas/tema-y-usabilidad/landing-light-1440.png) |
 | Ampliación móvil | [Ver](capturas/tema-y-usabilidad/zoom-dark-390.png) | [Ver](capturas/tema-y-usabilidad/zoom-light-390.png) |
+
+## Corrección: detalle de publicación y avisos
+
+Se reprodujo el defecto al abrir «Cómo funciona»: `grid-template-columns: 1fr auto`
+dejaba que el detalle comprimiera el título (de 925 a 17 px a 1440 px).
+La regresión de navegador falló con ese CSS antes de corregirlo.
+Se usan columnas acotadas desde 1100 px, una sola columna por debajo y alineación
+superior. No cambian el contenido ni el comportamiento de publicación o avisos.
+
+La regresión abre con Enter y cierra con Espacio, comprueba foco, estabilidad del
+ancho y posición del título, límites del contenido y ausencia de texto recortado.
+Aprobó en oscuro y claro a 320, 390, 768, 1024 y 1440 px, con red externa bloqueada.
+Se revisaron visualmente las capturas de escritorio oscuro y móvil claro.
+
+Verificación ejecutada en el directorio de trabajo (no en clon limpio):
+`npm run build` aprobado; `npm test` aprobado (121 tests, 6 archivos);
+`PW_CHROMIUM_PATH=/usr/bin/chromium npm run test:browser` aprobado;
+`git diff --check` aprobado. Sin merge ni despliegue manual.
+
+Evidencias: [escritorio oscuro](capturas/tema-y-usabilidad/control-note-dark-1440-open.png)
+y [móvil claro](capturas/tema-y-usabilidad/control-note-light-390-open.png).
