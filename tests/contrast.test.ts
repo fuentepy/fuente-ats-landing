@@ -11,22 +11,26 @@ function color(token:string) {
 }
 const lum=(rgb:number[])=>rgb.map(c=>c<=.04045?c/12.92:((c+.055)/1.055)**2.4).reduce((v,c,i)=>v+c*[.2126,.7152,.0722][i],0);
 const ratio=(a:number[],b:number[])=>{const x=lum(a),y=lum(b);return(Math.max(x,y)+.05)/(Math.min(x,y)+.05);};
-it('WCAG usa los tokens reales: botones, texto grande y texto de cuerpo',()=>{
-  const white=color('bg'),primary=color('primary'),secondary=color('secondary'),muted=color('muted');
+it('WCAG usa los tokens reales del tema oscuro: botones, texto de cuerpo y acentos',()=>{
+  const bg=color('bg'),card=color('card'),muted=color('muted'),primary=color('primary'),secondary=color('secondary'),onPrimary=color('on-primary');
   const buttonRatios:number[]=[];const titleRatios:number[]=[];
   for(let i=0;i<=100;i++){
     const gradient=primary.map((c,j)=>c+(secondary[j]-c)*i/100);
-    buttonRatios.push(ratio(gradient,white));titleRatios.push(ratio(gradient,muted));
+    buttonRatios.push(ratio(onPrimary,gradient));titleRatios.push(ratio(gradient,bg));
   }
-  expect(Math.min(...buttonRatios)).toBeGreaterThanOrEqual(4.5);expect(Math.min(...titleRatios)).toBeGreaterThanOrEqual(3);
-  for(const fg of ['fg','muted-fg'])for(const bg of ['bg','muted'])expect(ratio(color(fg),color(bg))).toBeGreaterThanOrEqual(4.5);
-  const eyebrowBg=primary.map((v,i)=>v*.08+white[i]*.92);expect(ratio(primary,eyebrowBg)).toBeGreaterThanOrEqual(4.5);
-  expect(ratio(color('control-border'),white)).toBeGreaterThanOrEqual(3);
+  expect(Math.min(...buttonRatios)).toBeGreaterThanOrEqual(4.5);expect(Math.min(...titleRatios)).toBeGreaterThanOrEqual(4.5);
+  for(const fg of ['fg','muted-fg'])for(const surface of [bg,muted,card])expect(ratio(color(fg),surface)).toBeGreaterThanOrEqual(4.5);
+  expect(ratio(primary,card)).toBeGreaterThanOrEqual(4.5);
+  const eyebrowBg=primary.map((v,i)=>v*.1+bg[i]*.9);expect(ratio(primary,eyebrowBg)).toBeGreaterThanOrEqual(4.5);
+  for(const surface of [bg,card])expect(ratio(color('control-border'),surface)).toBeGreaterThanOrEqual(3);
   console.info(`Contraste mínimo: botón ${Math.min(...buttonRatios).toFixed(2)}:1; título ${Math.min(...titleRatios).toFixed(2)}:1`);
 });
 it('mantiene foco y reducción de movimiento en CSS',()=>{
   expect(css).toContain(':focus-visible');expect(css).toContain('prefers-reduced-motion: reduce');expect(css).toContain('scroll-behavior: auto');
   expect(css).toContain('background: linear-gradient(135deg, hsl(var(--ats-primary)), hsl(var(--ats-secondary)))');
+  // La aparición al hacer scroll solo se activa por JavaScript (clase ats-motion): sin JS todo es visible.
+  expect(css).toContain('.landing-ats.ats-motion .ats-reveal');
+  expect(css).not.toMatch(/\n\.landing-ats \.ats-reveal \{[^}]*opacity: 0/);
 });
 
 it('pestañas: mide texto y público con los tokens de sus reglas CSS reales', () => {

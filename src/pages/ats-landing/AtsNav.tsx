@@ -28,7 +28,7 @@ export const AtsNav = () => {
   return <header className="ats-header">
     <a href="#contenido" className="ats-skip-link">Saltar al contenido</a>
     <div className="ats-container ats-nav-bar">
-      <a href="#inicio" aria-label="FuenteHR, inicio"><img src="/logo-fuentehr-light.png" alt="FuenteHR" width={150} height={50} /></a>
+      <a href="#inicio" aria-label="FuenteHR, inicio"><img src="/logo-fuentehr.png" alt="FuenteHR" width={150} height={50} /></a>
       <nav aria-label="Navegación principal" className="ats-nav-desktop">{navigation()}</nav>
       <button ref={toggle} type="button" className="ats-nav-toggle" aria-label={menuOpen ? 'Cerrar menú' : 'Abrir menú'} aria-expanded={menuOpen} aria-controls="menu-movil" onClick={() => setMenuOpen(v => !v)}>
         {menuOpen ? <X aria-hidden="true" size={24} /> : <Menu aria-hidden="true" size={24} />}

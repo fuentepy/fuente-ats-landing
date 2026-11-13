@@ -33,7 +33,7 @@ export const AtsShowcase = () => {
 
   return <section id="producto" className="ats-section" aria-labelledby="ats-showcase-title">
     <div className="ats-container">
-      <div className="ats-section-heading"><h2 id="ats-showcase-title">Seguí el avance de cada búsqueda</h2><p>Capturas con datos de ejemplo</p></div>
+      <div className="ats-section-heading"><span className="ats-eyebrow">Producto</span><h2 id="ats-showcase-title">Seguí el avance de cada búsqueda</h2><p>Capturas con datos de ejemplo</p></div>
       <div className="ats-showcase">
         <div className="ats-showcase-tabs" role="tablist" aria-label="Pantallas de FuenteHR">
           {screens.map((screen, index) => <button

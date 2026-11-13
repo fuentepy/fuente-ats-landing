@@ -31,8 +31,8 @@ export const AtsCtaForm = () => {
     } finally {setLoading(false);setToken('');setCaptchaVersion(v=>v+1);}
   };
   return <section id="contacto-ats" className="ats-section"><div className="ats-container">
-    <div className="ats-section-heading"><h2>Agendá una demo</h2><p>Contanos cómo trabajás y coordinamos un recorrido por FuenteHR.</p></div>
-    <div className="ats-grid ats-grid-2">
+    <div className="ats-section-heading"><span className="ats-eyebrow">Demo</span><h2>Agendá una demo</h2><p>Contanos cómo trabajás y coordinamos un recorrido por FuenteHR.</p></div>
+    <div className="ats-grid ats-grid-2 ats-form-grid">
       {sent ? <div className="ats-card" role="status"><h3>¡Solicitud recibida!</h3><p>Te contactamos {RESPONSE_PROMISE} para coordinar un horario.</p></div> :
       <form onSubmit={handleSubmit} className="ats-contact-form" aria-label="Solicitar una demo">
         <div><label className="ats-label" htmlFor="ats-name">Nombre completo *</label><input id="ats-name" className="ats-input" autoComplete="name" required maxLength={120} {...field('name')} /></div>
