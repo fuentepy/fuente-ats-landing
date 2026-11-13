@@ -1,4 +1,6 @@
 import "./styles.css";
+import { Toaster } from "sonner";
+import { useWebTheme } from "./useWebTheme";
 import { useReveal } from "./useReveal";
 import { AtsNav } from "./AtsNav";
 import { AtsHero } from "./AtsHero";
@@ -14,9 +16,10 @@ import { AtsFooter } from "./AtsFooter";
 // Landing de venta del software ATS (modulo de reclutamiento) a otras empresas/consultoras.
 export default function AtsLandingPage() {
   useReveal();
+  const { theme, toggleTheme } = useWebTheme();
   return (
     <div className="landing-ats">
-      <AtsNav />
+      <AtsNav theme={theme} onToggleTheme={toggleTheme} />
       <main id="contenido" tabIndex={-1}>
       <AtsHero />
       <AtsFlow />
@@ -27,7 +30,8 @@ export default function AtsLandingPage() {
       <AtsTrialAndFaq />
       <AtsCtaForm />
       </main>
-      <AtsFooter />
+      <AtsFooter theme={theme} />
+      <Toaster richColors position="top-center" theme={theme} />
     </div>
   );
 }

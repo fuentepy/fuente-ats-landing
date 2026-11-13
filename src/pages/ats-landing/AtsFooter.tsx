@@ -1,7 +1,9 @@
-export const AtsFooter = () => (
+import type { WebTheme } from "./useWebTheme";
+
+export const AtsFooter = ({ theme }: { theme: WebTheme }) => (
   <footer className="ats-footer">
     <div className="ats-container ats-footer-inner">
-      <img src="/logo-fuentehr.png" alt="FuenteHR" width={150} height={50} />
+      <img src={theme === 'light' ? '/logo-fuentehr-light.png' : '/logo-fuentehr.png'} alt="FuenteHR" width={150} height={50} />
       <p>FuenteHR es un producto de FUENTEPY S.A.</p>
       <p>© {new Date().getFullYear()} FUENTEPY S.A.</p>
       <div className="ats-footer-links">

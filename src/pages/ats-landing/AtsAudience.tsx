@@ -31,7 +31,10 @@ const modes = [
 ];
 export const AtsAudience = () => <section id="modalidades" className="ats-section">
   <div className="ats-container">
-    <div className="ats-section-heading"><span className="ats-eyebrow">Dos formas de trabajar</span><h2>Un sistema, dos modalidades</h2><p>Elegí la tuya al crear la empresa.</p></div>
+    <div className="ats-audience-intro">
+      <div className="ats-section-heading"><span className="ats-eyebrow">Dos formas de trabajar</span><h2>Un sistema, dos modalidades</h2><p>Elegí la tuya al crear la empresa.</p></div>
+      <figure className="ats-audience-preview"><img src="/capturas/portal-cliente-oscuro-movil-900.webp" width="900" height="617" alt="Vista del portal del cliente con una vacante y postulaciones compartidas por etapa." loading="lazy" decoding="async" /><figcaption>Portal del cliente · Consultoras · Datos de ejemplo</figcaption></figure>
+    </div>
     <div className="ats-grid-2 ats-grid">{modes.map(({ Icon, ...mode }) => <article className="ats-card ats-reveal" key={mode.title}>
       <span className="ats-icon" aria-hidden="true"><Icon size={22} /></span>
       <h3>{mode.title}</h3><p className="ats-card-lead">{mode.lead}</p>
