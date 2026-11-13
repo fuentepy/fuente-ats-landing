@@ -34,7 +34,7 @@ export const AtsNav = ({ theme, onToggleTheme }: { theme: WebTheme; onToggleThem
       <nav aria-label="Navegación principal" className="ats-nav-desktop">{navigation()}</nav>
       <div className="ats-header-actions">
       <a href={APP_LINKS.login} className="ats-header-login">Iniciar sesión</a>
-      <button type="button" className="ats-theme-toggle" onClick={onToggleTheme} aria-label={theme === 'dark' ? 'Usar modo claro' : 'Usar modo oscuro'} aria-pressed={theme === 'light'} title={theme === 'dark' ? 'Usar modo claro' : 'Usar modo oscuro'}>
+      <button type="button" className="ats-theme-toggle" onClick={onToggleTheme} aria-label={theme === 'dark' ? 'Usar modo claro' : 'Usar modo oscuro'} title={theme === 'dark' ? 'Usar modo claro' : 'Usar modo oscuro'}>
         {theme === 'dark' ? <Sun size={21} aria-hidden="true" /> : <Moon size={21} aria-hidden="true" />}
       </button>
       <button ref={toggle} type="button" className="ats-nav-toggle" aria-label={menuOpen ? 'Cerrar menú' : 'Abrir menú'} aria-expanded={menuOpen} aria-controls="menu-movil" onClick={() => setMenuOpen(v => !v)}>

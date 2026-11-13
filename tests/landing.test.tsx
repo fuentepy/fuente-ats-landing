@@ -152,7 +152,7 @@ it('título breve, recorrido común correcto y acceso al modo claro', () => {
   expect(flow).not.toContain('Propuesta');expect(flow).not.toContain('Cliente');
   for(const stage of ['Solicitud','Vacante','Selección','Contratación'])expect(flow).toContain(stage);
   expect(flow).toContain('sin una solicitud previa');
-  expect(page).toContain('aria-label="Usar modo claro"');expect(page).toContain('aria-pressed="false"');
+  expect(page).toContain('aria-label="Usar modo claro"');expect(page).toContain('title="Usar modo claro"');
   expect(page).toContain('class="ats-header-login"');
 });
 it('datos opcionales plegados sin ocultar campos requeridos, CAPTCHA o consentimiento', () => {
