@@ -3,6 +3,7 @@ import { Menu, X } from "lucide-react";
 import { APP_LINKS } from "@/lib/links";
 
 const links = [
+  { id: "producto", label: "Producto" },
   { id: "modalidades", label: "Modalidades" },
   { id: "funciones", label: "Funciones" },
   { id: "como-empezar", label: "Cómo empezar" },
@@ -30,6 +31,7 @@ export const AtsNav = () => {
     <div className="ats-container ats-nav-bar">
       <a href="#inicio" aria-label="FuenteHR, inicio"><img src="/logo-fuentehr-light.png" alt="FuenteHR" width={150} height={50} /></a>
       <nav aria-label="Navegación principal" className="ats-nav-desktop">{navigation()}</nav>
+      <a href={APP_LINKS.login} className="ats-mobile-login">Iniciar sesión</a>
       <button ref={toggle} type="button" className="ats-nav-toggle" aria-label={menuOpen ? 'Cerrar menú' : 'Abrir menú'} aria-expanded={menuOpen} aria-controls="menu-movil" onClick={() => setMenuOpen(v => !v)}>
         {menuOpen ? <X aria-hidden="true" size={24} /> : <Menu aria-hidden="true" size={24} />}
       </button>

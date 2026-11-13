@@ -16,9 +16,9 @@ export default function AtsLandingPage() {
       <AtsNav />
       <main id="contenido" tabIndex={-1}>
       <AtsHero />
+      <AtsShowcase />
       <AtsAudience />
       <AtsFeatures />
-      <AtsShowcase />
       <AtsHowItWorks />
       <AtsTrialAndFaq />
       <AtsCtaForm />

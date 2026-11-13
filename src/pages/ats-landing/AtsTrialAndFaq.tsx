@@ -9,9 +9,14 @@ const questions = [
 ];
 export const AtsTrialAndFaq = () => <>
   <section id="prueba-gratuita" className="ats-section"><div className="ats-container ats-trial">
-    <h2>Probá FuenteHR con tu empresa</h2><p>La prueba gratuita no se convierte automáticamente en una suscripción paga ni autoriza cargos. La continuidad paga requiere contratación expresa.</p>
-    <p>Al vencer se restringe crear vacantes, sumar personal y usar IA, tras el período de gracia aplicable. Tus datos se conservan. En el registro ves los días y los límites vigentes.</p>
-    <p>Necesitás un correo de empresa: no se aceptan Gmail, Hotmail, Yahoo ni otros correos personales similares.</p>
+    <span className="ats-eyebrow">Tu próximo proceso empieza acá</span><h2>Probá FuenteHR con tu empresa</h2>
+    <p className="ats-trial-lead">Sin cargos automáticos. Contratás un plan pago solo si lo decidís.</p>
+    <p className="ats-note">Necesitás un correo de empresa. Los días y límites vigentes se informan al registrarte.</p>
+    <details className="ats-trial-detail"><summary>Ver condiciones de la prueba</summary>
+      <p>La prueba gratuita no se convierte automáticamente en una suscripción paga ni autoriza cargos. La continuidad paga requiere contratación expresa.</p>
+      <p>Al vencer se restringe crear vacantes, sumar personal y usar IA, tras el período de gracia aplicable. Tus datos se conservan. En el registro ves los días y los límites vigentes.</p>
+      <p>Necesitás un correo de empresa: no se aceptan Gmail, Hotmail, Yahoo ni otros correos personales similares.</p>
+    </details>
     <div className="ats-actions"><a href={APP_LINKS.signup} className="ats-btn-gradient">Comenzar prueba gratuita</a><a href={APP_LINKS.legal}>Términos y privacidad</a></div>
   </div></section>
   <section id="preguntas" className="ats-section ats-muted-bg"><div className="ats-container ats-faq">
