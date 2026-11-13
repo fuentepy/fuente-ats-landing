@@ -1,5 +1,4 @@
 import { createRoot } from "react-dom/client";
-import { Toaster } from "sonner";
 import "./index.css";
 import AtsLandingPage from "./pages/ats-landing/AtsLandingPage";
 
@@ -15,6 +14,5 @@ if ("serviceWorker" in navigator) {
 createRoot(document.getElementById("root")!).render(
   <>
     <AtsLandingPage />
-    <Toaster richColors position="top-center" />
   </>
 );

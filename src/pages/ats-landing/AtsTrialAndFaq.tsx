@@ -1,3 +1,4 @@
+import { ArrowRight } from 'lucide-react';
 import { APP_LINKS } from '@/lib/links';
 const questions = [
   ['¿Cómo se usan los datos y la IA?', <>Los datos se usan para gestionar tus procesos de selección según los <a href={APP_LINKS.legal}>Términos y privacidad</a>. Al solicitar un análisis de CV con IA, su contenido puede enviarse a un proveedor externo. La IA puede dar resultados incompletos: una persona debe revisar y decidir.</>],
@@ -8,11 +9,14 @@ const questions = [
   ['¿Cómo sumo a mi equipo?', 'El dueño o administrador crea las cuentas desde Organización → Crear Usuario. Los contactos de clientes se crean desde la ficha del cliente.'],
 ];
 export const AtsTrialAndFaq = () => <>
-  <section id="prueba-gratuita" className="ats-section"><div className="ats-container ats-trial">
-    <h2>Probá FuenteHR con tu empresa</h2><p>La prueba gratuita no se convierte automáticamente en una suscripción paga ni autoriza cargos. La continuidad paga requiere contratación expresa.</p>
-    <p>Al vencer se restringe crear vacantes, sumar personal y usar IA, tras el período de gracia aplicable. Tus datos se conservan. En el registro ves los días y los límites vigentes.</p>
-    <p>Necesitás un correo de empresa: no se aceptan Gmail, Hotmail, Yahoo ni otros correos personales similares.</p>
-    <div className="ats-actions"><a href={APP_LINKS.signup} className="ats-btn-gradient">Comenzar prueba gratuita</a><a href={APP_LINKS.legal}>Términos y privacidad</a></div>
+  <section id="prueba-gratuita" className="ats-section"><div className="ats-container ats-trial ats-reveal">
+    <h2>Probá FuenteHR con tu empresa</h2><p>Sin cargos automáticos. Contratás un plan pago solo si decidís.</p>
+    <p className="ats-trial-chip">Necesitás un correo de empresa: no se aceptan Gmail, Hotmail, Yahoo ni otros correos personales similares.</p>
+    <div className="ats-actions"><a href={APP_LINKS.signup} className="ats-btn-gradient">Comenzar prueba gratuita <ArrowRight aria-hidden="true" size={18} /></a><a href={APP_LINKS.legal}>Términos y privacidad</a></div>
+    <details className="ats-more"><summary>Ver condiciones de la prueba</summary>
+      <p>La prueba gratuita no se convierte automáticamente en una suscripción paga ni autoriza cargos. La continuidad paga requiere contratación expresa.</p>
+      <p>Al vencer se restringe crear vacantes, sumar personal y usar IA, tras el período de gracia aplicable. Tus datos se conservan. En el registro ves los días y los límites vigentes.</p>
+    </details>
   </div></section>
   <section id="preguntas" className="ats-section ats-muted-bg"><div className="ats-container ats-faq">
     <h2>Preguntas frecuentes</h2>{questions.map(([question,answer]) => <details key={String(question)}><summary>{question}</summary><p>{answer}</p></details>)}

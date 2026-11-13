@@ -31,17 +31,21 @@ export const AtsCtaForm = () => {
     } finally {setLoading(false);setToken('');setCaptchaVersion(v=>v+1);}
   };
   return <section id="contacto-ats" className="ats-section"><div className="ats-container">
-    <div className="ats-section-heading"><h2>Agendá una demo</h2><p>Contanos cómo trabajás y coordinamos un recorrido por FuenteHR.</p></div>
-    <div className="ats-grid ats-grid-2">
+    <div className="ats-section-heading"><span className="ats-eyebrow">Demo</span><h2>Agendá una demo</h2><p>Contanos cómo trabajás y coordinamos un recorrido por FuenteHR.</p></div>
+    <div className="ats-grid ats-grid-2 ats-form-grid">
       {sent ? <div className="ats-card" role="status"><h3>¡Solicitud recibida!</h3><p>Te contactamos {RESPONSE_PROMISE} para coordinar un horario.</p></div> :
       <form onSubmit={handleSubmit} className="ats-contact-form" aria-label="Solicitar una demo">
+        <div className="ats-form-fields">
         <div><label className="ats-label" htmlFor="ats-name">Nombre completo *</label><input id="ats-name" className="ats-input" autoComplete="name" required maxLength={120} {...field('name')} /></div>
         <div><label className="ats-label" htmlFor="ats-company">Empresa *</label><input id="ats-company" className="ats-input" autoComplete="organization" required maxLength={160} {...field('company')} /></div>
         <div><label className="ats-label" htmlFor="ats-email">Correo *</label><input id="ats-email" className="ats-input" type="email" autoComplete="email" required maxLength={200} {...field('email')} /></div>
         <div><label className="ats-label" htmlFor="ats-phone">Teléfono</label><input id="ats-phone" className="ats-input" type="tel" autoComplete="tel" maxLength={40} {...field('phone')} /></div>
+        </div>
+        <details className="ats-form-extra"><summary>Agregar información (opcional)</summary><div className="ats-form-fields">
         <div><label className="ats-label" htmlFor="ats-team">Tamaño del equipo</label><select id="ats-team" className="ats-select" {...field('team_size')}><option>1 reclutador</option><option>2-5 reclutadores</option><option>6-15 reclutadores</option><option>Más de 15</option></select></div>
         <div><label className="ats-label" htmlFor="ats-mode">¿Cómo trabajan? (opcional)</label><select id="ats-mode" className="ats-select" {...field('work_mode')}><option value="">Sin especificar</option><option value="consultora">Consultora</option><option value="rrhh_interno">Equipo de RRHH interno</option></select></div>
         <div><label className="ats-label" htmlFor="ats-msg">Contanos tu caso (opcional)</label><textarea id="ats-msg" className="ats-textarea" maxLength={1500} {...field('message')} /></div>
+        </div></details>
         <div className="ats-honeypot" aria-hidden="true"><label htmlFor="ats-website">Sitio web</label><input id="ats-website" name="website" tabIndex={-1} autoComplete="off" {...field('website')} /></div>
         {siteKey && <TurnstileWidget key={captchaVersion} siteKey={siteKey} onToken={onToken} />}
         {error && <p role="alert">{error}</p>}

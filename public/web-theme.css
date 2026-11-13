@@ -1,0 +1,41 @@
+/* Preferencia visual de la web comercial, independiente del ATS. */
+:root {
+  --ats-primary: 75 100% 64%;
+  --ats-secondary: 95 75% 52%;
+  --ats-on-primary: 150 45% 6%;
+  --ats-ink: 150 30% 4%;
+  --ats-bg: 150 30% 5%;
+  --ats-fg: 140 20% 96%;
+  --ats-muted: 150 22% 8%;
+  --ats-muted-fg: 150 8% 80%;
+  --ats-border: 150 10% 18%;
+  --ats-control-border: 150 8% 60%;
+  --ats-card: 150 20% 10%;
+  --ats-tertiary: 165 70% 55%;
+  --ats-shadow: 0 0% 0%;
+  --ats-shadow-alpha: .6;
+  --ats-error: 0 90% 78%;
+  --ats-glow-alpha: .16;
+  color-scheme: dark;
+  background: hsl(var(--ats-bg));
+  color: hsl(var(--ats-fg));
+}
+:root[data-web-theme="light"] {
+  --ats-primary: 139 56% 25%;
+  --ats-secondary: 100 50% 24%;
+  --ats-on-primary: 0 0% 100%;
+  --ats-ink: 140 16% 93%;
+  --ats-bg: 0 0% 100%;
+  --ats-fg: 150 15% 8%;
+  --ats-muted: 100 20% 97%;
+  --ats-muted-fg: 0 0% 32%;
+  --ats-border: 120 9% 82%;
+  --ats-control-border: 0 0% 43%;
+  --ats-card: 120 16% 98%;
+  --ats-tertiary: 150 60% 23%;
+  --ats-shadow: 150 20% 8%;
+  --ats-shadow-alpha: .12;
+  --ats-error: 0 72% 35%;
+  --ats-glow-alpha: .07;
+  color-scheme: light;
+}

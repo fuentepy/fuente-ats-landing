@@ -90,9 +90,9 @@ it('showcase tiene tres pestañas enlazadas a tres paneles, dos ocultos', () => 
 it('showcase usa pictures móviles con dimensiones, alt verificado y rótulo visible en cada marco', () => {
   const page = showcaseHtml();
   expect(page.match(/<picture>/g)).toHaveLength(3);
-  expect(page.match(/Capturas con datos de ejemplo/g)).toHaveLength(4);
+  expect(page.match(/Capturas con datos de ejemplo/g)).toHaveLength(5);
   const images = page.match(/<img\b[^>]*>/g) ?? [];
-  expect(images).toHaveLength(3);
+  expect(images).toHaveLength(4);
   for (const img of images) {
     expect(img).toContain('width="1600"'); expect(img).toContain('height="914"');
     expect(img).toContain('loading="lazy"'); expect(img).toContain('decoding="async"');
@@ -143,4 +143,30 @@ it('todos los srcset del showcase apuntan a los nueve archivos locales existente
     expect(existsSync(`public${url}`)).toBe(true); files.add(url);
   }
   expect(files.size).toBe(9);
+});
+
+it('título breve, recorrido común correcto y acceso al modo claro', () => {
+  const page=html();
+  expect(page).toContain('Tu selección,');expect(page).toContain('en un solo lugar.');
+  const flow=page.match(/<section[^>]*aria-label="Recorrido de una búsqueda"[^>]*>([\s\S]*?)<\/section>/)?.[1] ?? '';
+  expect(flow).not.toContain('Propuesta');expect(flow).not.toContain('Cliente');
+  for(const stage of ['Solicitud','Vacante','Selección','Contratación'])expect(flow).toContain(stage);
+  expect(flow).toContain('sin una solicitud previa');
+  expect(page).toContain('aria-label="Usar modo claro"');expect(page).toContain('title="Usar modo claro"');
+  expect(page).toContain('class="ats-header-login"');
+});
+it('datos opcionales plegados sin ocultar campos requeridos, CAPTCHA o consentimiento', () => {
+  const page=html();const form=page.match(/<form[\s\S]*?<\/form>/)?.[0] ?? '';
+  const optional=form.match(/<details class="ats-form-extra">([\s\S]*?)<\/details>/)?.[1] ?? '';
+  for(const id of ['ats-team','ats-mode','ats-msg'])expect(optional).toContain(`id="${id}"`);
+  for(const id of ['ats-name','ats-company','ats-email','ats-phone','ats-consent'])expect(optional).not.toContain(`id="${id}"`);
+  expect(optional).not.toContain('required=""');
+  expect(form).toContain('Agregar información (opcional)');
+  expect(form).not.toMatch(/<details[^>]* open/);
+});
+it('el recorte de portada y el visor mantienen datos de ejemplo y acceso a capturas completas', () => {
+  const page=html();expect(page).toContain('class="ats-hero-crop"');
+  expect(page).toContain('Ver las capturas completas de FuenteHR');
+  expect(page).toContain('aria-label="Cerrar captura"');expect(page).toContain('aria-label="Captura ampliada"');
+  expect(page).toContain('Portal del cliente · Consultoras · Datos de ejemplo');
 });

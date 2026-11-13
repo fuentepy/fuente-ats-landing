@@ -1,6 +1,9 @@
+import { Building2, Briefcase } from "lucide-react";
 const modes = [
   {
+    Icon: Briefcase,
     title: 'Consultora de selección',
+    lead: 'Tus clientes y sus búsquedas, en un mismo espacio.',
     steps: [
       ['Solicitud del cliente', 'Recibí el pedido del perfil que necesita.'],
       ['Propuesta comercial, cuando corresponde', 'Presentala antes de la vacante. Es opcional si creás la vacante directamente.'],
@@ -12,7 +15,9 @@ const modes = [
     benefits: ['Clientes en un mismo lugar', 'Solicitudes de nuevos perfiles', 'Propuestas comerciales antes de la vacante', 'Portal para colaborar con cada cliente'],
   },
   {
+    Icon: Building2,
     title: 'Equipo de RRHH interno',
+    lead: 'Las áreas piden, RRHH decide y coordina.',
     steps: [
       ['Solicitud del área', 'El responsable pide una búsqueda para su área.'],
       ['Revisión de RRHH', 'Al aprobarla, RRHH crea la vacante en borrador.'],
@@ -26,10 +31,17 @@ const modes = [
 ];
 export const AtsAudience = () => <section id="modalidades" className="ats-section">
   <div className="ats-container">
-    <div className="ats-section-heading"><span className="ats-eyebrow">Dos formas de trabajar</span><h2>Un recorrido para tu equipo</h2><p>Elegí la modalidad al comenzar y seguí la guía de puesta en marcha.</p></div>
-    <div className="ats-grid-2 ats-grid">{modes.map(mode => <article className="ats-card" key={mode.title}>
-      <h3>{mode.title}</h3><ul className="ats-benefits">{mode.benefits.map(b => <li key={b}>{b}</li>)}</ul>
-      <ol className="ats-mode-steps">{mode.steps.map(([title, text]) => <li key={title}><strong>{title}</strong><p>{text}</p></li>)}</ol>
+    <div className="ats-audience-intro">
+      <div className="ats-section-heading"><span className="ats-eyebrow">Dos formas de trabajar</span><h2>Un sistema, dos modalidades</h2><p>Elegí la tuya al crear la empresa.</p></div>
+      <figure className="ats-audience-preview"><img src="/capturas/portal-cliente-oscuro-movil-900.webp" width="900" height="617" alt="Vista del portal del cliente con una vacante y postulaciones compartidas por etapa." loading="lazy" decoding="async" /><figcaption>Portal del cliente · Consultoras · Datos de ejemplo</figcaption></figure>
+    </div>
+    <div className="ats-grid-2 ats-grid">{modes.map(({ Icon, ...mode }) => <article className="ats-card ats-reveal" key={mode.title}>
+      <span className="ats-icon" aria-hidden="true"><Icon size={22} /></span>
+      <h3>{mode.title}</h3><p className="ats-card-lead">{mode.lead}</p>
+      <ul className="ats-benefits">{mode.benefits.map(b => <li key={b}>{b}</li>)}</ul>
+      <details className="ats-more"><summary>Ver el recorrido paso a paso</summary>
+        <ol className="ats-mode-steps">{mode.steps.map(([title, text]) => <li key={title}><strong>{title}</strong><p>{text}</p></li>)}</ol>
+      </details>
     </article>)}</div>
   </div>
 </section>;
