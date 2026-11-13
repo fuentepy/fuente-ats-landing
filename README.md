@@ -132,3 +132,11 @@ y el merge a main (que publica la web). No se cambió `vercel.json`, DNS ni domi
 
 Ver [decisiones y validación de la etapa 1](docs/web-fuentehr-etapa-1.md), incluyendo
 revisión legal pendiente, condiciones de prueba y límites de lo ejecutado.
+
+## Capturas del producto
+
+La sección «Seguí el avance de cada búsqueda» muestra el tablero real con datos
+ficticios, una captura para escritorio y otra para móvil, con visor ampliado.
+Para regenerarlas desde un checkout local del ATS, ver
+[origen, comandos y verificación](docs/capturas-producto.md). El build de esta web
+solo necesita los PNG incluidos: no requiere el ATS ni una conexión a Supabase.
