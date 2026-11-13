@@ -54,3 +54,18 @@ it('pestañas: mide texto y público con los tokens de sus reglas CSS reales', (
   measurements.forEach(value => expect(value).toBeGreaterThanOrEqual(4.5));
   console.info(`Pestañas: normal ${measurements[0].toFixed(2)}:1; público ${measurements[1].toFixed(2)}:1; hover ${measurements[2].toFixed(2)}/${measurements[3].toFixed(2)}:1; activa ${measurements[4].toFixed(2)}:1`);
 });
+
+it('portada oscura: texto, botones, controles y foco conservan contraste', () => {
+  const surfaces = [color('hero-bg'), color('hero-surface')];
+  // El brillo decorativo real usa el acento al 8%: se incluye su caso más claro.
+  surfaces.push(color('hero-accent').map((v,i) => v * .08 + color('hero-bg')[i] * .92));
+  const values: number[] = [];
+  for (const fg of ['hero-fg', 'hero-muted', 'hero-accent']) for (const bg of surfaces) {
+    const value=ratio(color(fg),bg); expect(value).toBeGreaterThanOrEqual(4.5); values.push(value);
+  }
+  const button=ratio(color('hero-accent-ink'),color('hero-accent'));
+  expect(button).toBeGreaterThanOrEqual(4.5);
+  expect(ratio(color('hero-control-border'),color('hero-bg'))).toBeGreaterThanOrEqual(3);
+  expect(ratio(color('hero-accent'),color('hero-bg'))).toBeGreaterThanOrEqual(3);
+  console.info(`Portada: texto mínimo ${Math.min(...values).toFixed(2)}:1; botón ${button.toFixed(2)}:1`);
+});

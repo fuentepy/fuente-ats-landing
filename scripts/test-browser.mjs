@@ -38,6 +38,9 @@ try {
       assert.ok(sizes.scroll<=sizes.client,`Desborde a ${width}: ${JSON.stringify(sizes)}`);
     };
     await noOverflow();
+    const hero=page.locator('#inicio');await hero.getByRole('img').evaluate(img=>img.decode());
+    assert.equal(await page.getByRole('heading',{level:1}).count(),1);
+    assert.ok((await hero.getByRole('img').boundingBox()).y<900,'El producto aparece desde la primera pantalla');
     // Cada href local apunta a un id existente; los externos pertenecen al contrato explícito.
     const hrefs=await page.locator('a[href]').evaluateAll(links=>links.map(a=>a.getAttribute('href')));
     for(const href of hrefs){
@@ -93,6 +96,20 @@ try {
     for(let i=0;i<screens.length;i++){
       await tablist.getByRole('tab',{name:screens[i].label,exact:true}).click();await verifyScreen(i);
       await showcase.screenshot({path:`artifacts/showcase-${width}-${screens[i].id}.png`,style:'.ats-header { visibility: hidden !important; }'});
+      const enlarge=panels.nth(i).getByRole('button',{name:`Ampliar captura: ${screens[i].label}`,exact:true});
+      await enlarge.focus();await page.keyboard.press('Enter');
+      const viewer=page.getByRole('dialog',{name:screens[i].label,exact:true});await viewer.waitFor();
+      const close=viewer.getByRole('button',{name:'Cerrar captura'});
+      assert.equal(await close.evaluate(el=>el===document.activeElement),true);
+      const largeImage=viewer.getByRole('img');await largeImage.evaluate(img=>img.decode());
+      assert.ok((await largeImage.evaluate(img=>img.currentSrc)).endsWith(`${screens[i].file}-oscuro-1600.webp`));
+      await noOverflow();
+      await page.keyboard.press('Tab');assert.equal(await viewer.getByRole('region',{name:'Captura ampliada'}).evaluate(el=>el===document.activeElement),true);
+      if(width===390){await page.keyboard.press('ArrowRight');await page.waitForFunction(()=>document.querySelector('.ats-capture-scroll').scrollLeft>0);}
+      if(i===0)await page.screenshot({path:`artifacts/landing-${width}-captura-ampliada.png`});
+      await page.keyboard.press('Escape');assert.equal(await viewer.isVisible(),false);
+      assert.equal(await enlarge.evaluate(el=>el===document.activeElement),true);
+      await page.keyboard.press('Space');await viewer.waitFor();await close.click();assert.equal(await viewer.isVisible(),false);
     }
     await tabs.nth(2).focus();
     for(const [key,index] of [['Home',0],['End',2],['ArrowRight',0],['ArrowLeft',2],['ArrowLeft',1],['ArrowLeft',0],['ArrowRight',1],['ArrowRight',2],['Home',0]]){
@@ -100,6 +117,22 @@ try {
     }
     await page.keyboard.press('Tab');assert.equal(await panels.nth(0).evaluate(el=>el===document.activeElement),true);
     await page.keyboard.press('Shift+Tab');assert.equal(await tabs.nth(0).evaluate(el=>el===document.activeElement),true);
+    const modeDetails=page.locator('#modalidades .ats-mode-detail');
+    assert.equal(await modeDetails.count(),2);
+    for(const detail of await modeDetails.all()){
+      assert.equal(await detail.evaluate(el=>el.open),false);
+      const summary=detail.locator('summary');await summary.focus();await page.keyboard.press('Enter');
+      assert.equal(await detail.evaluate(el=>el.open),true);assert.equal(await detail.locator('ol').isVisible(),true);await noOverflow();
+      await page.keyboard.press('Space');assert.equal(await detail.evaluate(el=>el.open),false);
+    }
+    for(const detail of await page.locator('#funciones .ats-feature-card details').all()){
+      assert.equal(await detail.evaluate(el=>el.open),false);await detail.locator('summary').click();
+      assert.equal(await detail.locator('p').isVisible(),true);await detail.locator('summary').click();
+    }
+    const conditions=page.locator('.ats-trial-detail');assert.equal(await conditions.evaluate(el=>el.open),false);
+    await conditions.locator('summary').focus();await page.keyboard.press('Enter');
+    assert.equal(await conditions.getByText('La prueba gratuita no se convierte automáticamente',{exact:false}).isVisible(),true);
+    await noOverflow();await page.keyboard.press('Space');assert.equal(await conditions.evaluate(el=>el.open),false);
     await page.evaluate(() => { if(document.activeElement instanceof HTMLElement)document.activeElement.blur();window.scrollTo(0,0); });
     await page.screenshot({path:`artifacts/landing-${width}.png`,fullPage:true});
     await page.screenshot({path:`artifacts/landing-${width}-inicio.png`});
@@ -113,8 +146,17 @@ try {
     fail=false;await page.getByRole('button',{name:'Agendar una demo',exact:true}).click();
     await page.getByRole('heading',{name:'¡Solicitud recibida!'}).waitFor();await noOverflow();
     assert.equal(submissions,2);assert.deepEqual(errors,[]);
-    console.log(`APROBADO ${width}px: 3 pestañas por clic y teclado, imágenes responsive cargadas, enlaces, anclas, menú, sin desborde y formulario local simulado.`);
+    console.log(`APROBADO ${width}px: 3 pestañas por clic y teclado, imágenes responsive cargadas, enlaces, anclas, menú, ampliación accesible, desplegables, sin desborde y formulario local simulado.`);
     await page.close();
+  }
+  for(const width of [320,768,1024]){
+    const page=await browser.newPage({viewport:{width,height:900},reducedMotion:'reduce'});
+    await page.route('**/*',route=>new URL(route.request().url()).origin===base&&route.request().method()==='GET'?route.continue():route.abort());
+    await page.goto(base);await page.getByRole('heading',{level:1}).waitFor();
+    await page.locator('#inicio img').evaluate(img=>img.decode());
+    assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));
+    await page.screenshot({path:`artifacts/landing-${width}-inicio.png`});
+    console.log(`APROBADO responsive ${width}px: portada y navegación sin desborde.`);await page.close();
   }
   // El resumen legal y los enlaces de acceso siguen disponibles sin JavaScript.
   const nojs=await browser.newPage({javaScriptEnabled:false});

@@ -54,7 +54,8 @@ it('corrige pipeline general, acceso a usuarios y período de gracia en ambos te
   const page=html();
   const hero=page.match(/<section id="inicio"[^>]*>([\s\S]*?)<\/section>/)?.[1] ?? '';
   const features=page.match(/<section id="funciones"[^>]*>([\s\S]*?)<\/section>/)?.[1] ?? '';
-  expect(hero).toContain('Definí las etapas de tu proceso de selección');
+  expect(hero).toContain('Tu selección,');
+  expect(hero).toContain('en un solo lugar.');
   expect(features).toContain('Pipeline configurable');
   expect(features).toContain('Definí las etapas de tu empresa y seguí el avance de las postulaciones de todas tus vacantes.');
   expect(`${hero} ${features}`).not.toContain('por vacante');
@@ -90,9 +91,9 @@ it('showcase tiene tres pestañas enlazadas a tres paneles, dos ocultos', () => 
 it('showcase usa pictures móviles con dimensiones, alt verificado y rótulo visible en cada marco', () => {
   const page = showcaseHtml();
   expect(page.match(/<picture>/g)).toHaveLength(3);
-  expect(page.match(/Capturas con datos de ejemplo/g)).toHaveLength(4);
+  expect(page.match(/Capturas con datos de ejemplo/g)).toHaveLength(5);
   const images = page.match(/<img\b[^>]*>/g) ?? [];
-  expect(images).toHaveLength(3);
+  expect(images).toHaveLength(4);
   for (const img of images) {
     expect(img).toContain('width="1600"'); expect(img).toContain('height="914"');
     expect(img).toContain('loading="lazy"'); expect(img).toContain('decoding="async"');
@@ -143,4 +144,32 @@ it('todos los srcset del showcase apuntan a los nueve archivos locales existente
     expect(existsSync(`public${url}`)).toBe(true); files.add(url);
   }
   expect(files.size).toBe(9);
+});
+
+it('portada breve con producto real prioritario y galería antes de las explicaciones', () => {
+  const page = html();
+  expect(page.match(/<h1[ >]/g)).toHaveLength(1);
+  expect(page).toContain('Organizá vacantes, candidatos y entrevistas.');
+  expect(page).toContain('Sin cargos automáticos. Días y límites al registrarte.');
+  expect(page).toContain('fetchPriority="high"');
+  expect(page.indexOf('id="producto"')).toBeLessThan(page.indexOf('id="modalidades"'));
+  expect(page.indexOf('id="modalidades"')).toBeLessThan(page.indexOf('id="funciones"'));
+  expect(page).not.toContain('elimina el trabajo manual');
+  expect(page).not.toContain('reclutamiento autónomo');
+});
+it('conserva los recorridos, detalles y condiciones en desplegables cerrados', () => {
+  const page = html();
+  expect(page.match(/class="ats-mode-detail"/g)).toHaveLength(2);
+  expect(page.match(/<summary>Ver cómo funciona /g)).toHaveLength(2);
+  expect(page.match(/<summary>Ver detalles /g)).toHaveLength(4);
+  expect(page).toContain('<summary>Ver condiciones de la prueba</summary>');
+  expect(page).not.toMatch(/<details[^>]*\bopen(?:=|[ >])/);
+  for (const text of ['antes de la vacante', 'RRHH crea la vacante en borrador', 'RRHH los confirma', 'contratación expresa', 'proveedor externo', 'tras el período de gracia aplicable', 'correo de empresa']) expect(page).toContain(text);
+});
+it('la galería tiene ampliación accesible sin abrir un sitio externo', () => {
+  const page = showcaseHtml();
+  for (const [, label] of showcaseScreens) expect(page).toContain(`aria-label="Ampliar captura: ${label}"`);
+  expect(page).toContain('<dialog'); expect(page).toContain('aria-labelledby="ats-capture-title"');
+  expect(page).toContain('aria-describedby="ats-capture-description"');
+  expect(page).toContain('aria-label="Cerrar captura"'); expect(page).toContain('aria-label="Captura ampliada"');
 });
