@@ -32,7 +32,9 @@ it('Turnstile solo se incluye si está configurado',()=>{
 it('no conserva afirmaciones retiradas ni puntajes o nombres ficticios de personas',()=>{
   const page=html();
   for(const text of ['70%','100% Seguros','Alta Disponibilidad','solo lectura','4 etapas','FuentePy','comercial@fuentepy.com','app.tuempresa.com','85%','Lucía Benítez'])expect(page).not.toContain(text);
-  expect(page).toContain('Ilustración con datos de ejemplo');
+  expect(page).toContain('Así se ve FuenteHR. Los nombres y datos son de demostración.');
+  expect(page).not.toContain('Ilustración con datos de ejemplo');
+  expect(page).not.toContain('Perfil de ejemplo');
 });
 it('explica control, dos modalidades, condiciones e IA revisada por personas',()=>{
   const page=html();for(const text of ['Consultora de selección','Equipo de RRHH interno','Propuesta comercial, cuando corresponde','antes de la vacante','RRHH crea la vacante en borrador','RRHH los confirma','Activar una vacante no la publica','apagados por defecto','una persona debe revisar y decidir','proveedor externo','correo de empresa','contratación expresa'])expect(page).toContain(text);

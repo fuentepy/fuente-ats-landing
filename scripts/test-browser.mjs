@@ -61,6 +61,31 @@ try {
       await nav.getByRole('link',{name:'Modalidades'}).click();assert.equal(new URL(page.url()).hash,'#modalidades');
       assert.equal(await page.getByRole('button',{name:'Abrir menú'}).isVisible(),false);
     }
+    // Capturas reales: recurso responsive cargado, visor, foco, teclado y scroll interno.
+    const showcase=page.locator('#producto');
+    const preview=showcase.getByRole('button',{name:'Ampliar captura del tablero de postulaciones',exact:true});
+    await preview.scrollIntoViewIfNeeded();
+    const image=preview.locator('img');await image.evaluate(img=>img.decode());
+    assert.ok((await image.evaluate(img=>img.currentSrc)).endsWith(`/producto/postulaciones-${width===390?'movil':'escritorio'}.png`));
+    await noOverflow();await showcase.screenshot({path:`artifacts/producto-${width}.png`,style:'.ats-header { visibility: hidden !important; }'});
+    await preview.focus();await page.keyboard.press('Enter');
+    const viewer=page.getByRole('dialog',{name:'Tablero de postulaciones',exact:true});await viewer.waitFor();
+    const close=viewer.getByRole('button',{name:'Cerrar captura',exact:true});
+    assert.equal(await close.evaluate(el=>el===document.activeElement),true);
+    await viewer.locator('img').evaluate(img=>img.decode());await noOverflow();
+    const scroll=viewer.getByRole('region',{name:'Captura ampliada del tablero de postulaciones'});
+    await page.keyboard.press('Tab');assert.equal(await scroll.evaluate(el=>el===document.activeElement),true);
+    if(width===390){
+      assert.ok(await scroll.evaluate(el=>el.scrollWidth>el.clientWidth));
+      await page.keyboard.press('ArrowRight');await page.waitForFunction(()=>document.querySelector('.ats-product-scroll').scrollLeft>0);
+    }
+    // El diálogo nativo permite ir a la interfaz del navegador con Tab; comprobamos la vuelta al control anterior.
+    await page.keyboard.press('Shift+Tab');assert.equal(await close.evaluate(el=>el===document.activeElement),true);
+    await page.screenshot({path:`artifacts/producto-${width}-ampliado.png`});
+    await page.keyboard.press('Escape');assert.equal(await viewer.isVisible(),false);
+    assert.equal(await preview.evaluate(el=>el===document.activeElement),true);
+    await page.keyboard.press('Space');await viewer.waitFor();await close.click();
+    assert.equal(await viewer.isVisible(),false);assert.equal(await preview.evaluate(el=>el===document.activeElement),true);
     await page.evaluate(() => { if(document.activeElement instanceof HTMLElement)document.activeElement.blur();window.scrollTo(0,0); });
     await page.screenshot({path:`artifacts/landing-${width}.png`,fullPage:true});
     await page.screenshot({path:`artifacts/landing-${width}-inicio.png`});
@@ -74,7 +99,7 @@ try {
     fail=false;await page.getByRole('button',{name:'Agendar una demo',exact:true}).click();
     await page.getByRole('heading',{name:'¡Solicitud recibida!'}).waitFor();await noOverflow();
     assert.equal(submissions,2);assert.deepEqual(errors,[]);
-    console.log(`APROBADO ${width}px: enlaces, anclas, teclado/menú, sin desborde, envío local simulado con fallo y reintento.`);
+    console.log(`APROBADO ${width}px: capturas responsive y visor accesible, enlaces, anclas, teclado/menú, sin desborde, envío local simulado con fallo y reintento.`);
     await page.close();
   }
   // El resumen legal y los enlaces de acceso siguen disponibles sin JavaScript.
