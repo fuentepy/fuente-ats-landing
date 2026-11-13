@@ -61,6 +61,45 @@ try {
       await nav.getByRole('link',{name:'Modalidades'}).click();assert.equal(new URL(page.url()).hash,'#modalidades');
       assert.equal(await page.getByRole('button',{name:'Abrir menú'}).isVisible(),false);
     }
+    const showcase=page.locator('#producto');
+    const tablist=showcase.getByRole('tablist',{name:'Pantallas de FuenteHR'});
+    const tabs=tablist.getByRole('tab');
+    const panels=showcase.getByRole('tabpanel',{includeHidden:true});
+    const screens=[
+      {id:'tablero',label:'Tablero de postulaciones',file:'tablero'},
+      {id:'portal',label:'Portal del cliente',file:'portal-cliente'},
+      {id:'solicitudes',label:'Solicitudes de las áreas',file:'solicitudes-rrhh'},
+    ];
+    assert.equal(await tabs.count(),3);assert.equal(await panels.count(),3);
+    const verifyScreen=async(index,focused=false)=>{
+      for(let i=0;i<screens.length;i++){
+        assert.equal(await tabs.nth(i).getAttribute('aria-selected'),String(i===index));
+        assert.equal(await tabs.nth(i).getAttribute('tabindex'),i===index?'0':'-1');
+        assert.equal(await panels.nth(i).evaluate(el=>el.hidden),i!==index);
+        assert.equal(await panels.nth(i).isVisible(),i===index);
+        assert.equal(await tabs.nth(i).getAttribute('aria-controls'),await panels.nth(i).getAttribute('id'));
+        assert.equal(await panels.nth(i).getAttribute('aria-labelledby'),await tabs.nth(i).getAttribute('id'));
+      }
+      if(focused){
+        assert.equal(await tabs.nth(index).evaluate(el=>el===document.activeElement),true);
+        assert.notEqual(await tabs.nth(index).evaluate(el=>getComputedStyle(el).outlineStyle),'none');
+      }
+      const img=panels.nth(index).getByRole('img');await img.scrollIntoViewIfNeeded();await img.evaluate(el=>el.decode());
+      assert.ok(await img.evaluate(el=>el.naturalWidth>0));
+      const suffix=width===390?'movil-900':'1600';
+      assert.ok((await img.evaluate(el=>el.currentSrc)).endsWith(`/capturas/${screens[index].file}-oscuro-${suffix}.webp`));
+      await noOverflow();
+    };
+    for(let i=0;i<screens.length;i++){
+      await tablist.getByRole('tab',{name:screens[i].label,exact:true}).click();await verifyScreen(i);
+      await showcase.screenshot({path:`artifacts/showcase-${width}-${screens[i].id}.png`,style:'.ats-header { visibility: hidden !important; }'});
+    }
+    await tabs.nth(2).focus();
+    for(const [key,index] of [['Home',0],['End',2],['ArrowRight',0],['ArrowLeft',2],['ArrowLeft',1],['ArrowLeft',0],['ArrowRight',1],['ArrowRight',2],['Home',0]]){
+      await page.keyboard.press(key);await verifyScreen(index,true);
+    }
+    await page.keyboard.press('Tab');assert.equal(await panels.nth(0).evaluate(el=>el===document.activeElement),true);
+    await page.keyboard.press('Shift+Tab');assert.equal(await tabs.nth(0).evaluate(el=>el===document.activeElement),true);
     await page.evaluate(() => { if(document.activeElement instanceof HTMLElement)document.activeElement.blur();window.scrollTo(0,0); });
     await page.screenshot({path:`artifacts/landing-${width}.png`,fullPage:true});
     await page.screenshot({path:`artifacts/landing-${width}-inicio.png`});
@@ -74,7 +113,7 @@ try {
     fail=false;await page.getByRole('button',{name:'Agendar una demo',exact:true}).click();
     await page.getByRole('heading',{name:'¡Solicitud recibida!'}).waitFor();await noOverflow();
     assert.equal(submissions,2);assert.deepEqual(errors,[]);
-    console.log(`APROBADO ${width}px: enlaces, anclas, teclado/menú, sin desborde, envío local simulado con fallo y reintento.`);
+    console.log(`APROBADO ${width}px: 3 pestañas por clic y teclado, imágenes responsive cargadas, enlaces, anclas, menú, sin desborde y formulario local simulado.`);
     await page.close();
   }
   // El resumen legal y los enlaces de acceso siguen disponibles sin JavaScript.

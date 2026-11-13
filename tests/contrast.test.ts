@@ -28,3 +28,29 @@ it('mantiene foco y reducción de movimiento en CSS',()=>{
   expect(css).toContain(':focus-visible');expect(css).toContain('prefers-reduced-motion: reduce');expect(css).toContain('scroll-behavior: auto');
   expect(css).toContain('background: linear-gradient(135deg, hsl(var(--ats-primary)), hsl(var(--ats-secondary)))');
 });
+
+it('pestañas: mide texto y público con los tokens de sus reglas CSS reales', () => {
+  const rule = (selector: string) => {
+    const start = css.indexOf(`${selector} {`); expect(start).toBeGreaterThanOrEqual(0);
+    return css.slice(start + selector.length + 2, css.indexOf('}', start));
+  };
+  const token = (block: string, property: string) => {
+    const match = block.match(new RegExp(`(?:^|;)\\s*${property}:\\s*hsl\\(var\\(--ats-([a-z-]+)\\)\\)`));
+    if (!match) throw new Error(`No token CSS para ${property}`);
+    return color(match[1]);
+  };
+  const base = rule('.landing-ats .ats-showcase-tab');
+  const selected = rule('.landing-ats .ats-showcase-tab[aria-selected="true"]');
+  const audience = rule('.landing-ats .ats-showcase-tab-audience');
+  const hover = rule('.landing-ats .ats-showcase-tab:hover:not([aria-selected="true"])');
+  expect(rule('.landing-ats .ats-showcase-tab[aria-selected="true"] .ats-showcase-tab-audience')).toContain('color: inherit');
+  const measurements = [
+    ratio(token(base, 'color'), token(base, 'background')),
+    ratio(token(audience, 'color'), token(base, 'background')),
+    ratio(token(base, 'color'), token(hover, 'background')),
+    ratio(token(audience, 'color'), token(hover, 'background')),
+    ratio(token(selected, 'color'), token(selected, 'background')),
+  ];
+  measurements.forEach(value => expect(value).toBeGreaterThanOrEqual(4.5));
+  console.info(`Pestañas: normal ${measurements[0].toFixed(2)}:1; público ${measurements[1].toFixed(2)}:1; hover ${measurements[2].toFixed(2)}/${measurements[3].toFixed(2)}:1; activa ${measurements[4].toFixed(2)}:1`);
+});
