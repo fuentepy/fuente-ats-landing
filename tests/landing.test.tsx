@@ -15,7 +15,7 @@ it('acciones principales y acceso a la app usan destinos reales',()=>{
 });
 it('navegación, anclas y pie son enlaces reales y legales',()=>{
   const page=html();
-  for(const id of ['modalidades','funciones','como-empezar','contacto-ats']){expect(page).toContain(`href="#${id}"`);expect(page).toContain(`id="${id}"`);}
+  for(const id of ['modalidades','funciones','producto','como-empezar','contacto-ats']){expect(page).toContain(`href="#${id}"`);expect(page).toContain(`id="${id}"`);}
   expect(page).toContain('FuenteHR es un producto de FUENTEPY S.A.');
   expect(page).toMatch(/<footer[\s\S]*href="https:\/\/app.fuentehr.com\/terminos"/);
   expect(page).toMatch(/<footer[\s\S]*href="mailto:contacto@fuentehr.com"/);
@@ -169,4 +169,13 @@ it('el recorte de portada y el visor mantienen datos de ejemplo y acceso a captu
   expect(page).toContain('Ver las capturas completas de FuenteHR');
   expect(page).toContain('aria-label="Cerrar captura"');expect(page).toContain('aria-label="Captura ampliada"');
   expect(page).toContain('Portal del cliente · Consultoras · Datos de ejemplo');
+});
+
+it('el menú enlaza la sección Producto, en el orden de la página', () => {
+  const nav = html().match(/<nav aria-label="Navegación principal"[\s\S]*?<\/nav>/)?.[0] ?? '';
+  expect(nav).toMatch(/href="#producto">Producto<\/a>/);
+  const order = ['#modalidades', '#funciones', '#producto', '#como-empezar', '#contacto-ats'].map(h => nav.indexOf(`href="${h}"`));
+  expect(order.every(i => i >= 0)).toBe(true);
+  expect([...order].sort((a, b) => a - b)).toEqual(order);
+  expect(readFileSync('src/pages/ats-landing/AtsLandingPage.tsx', 'utf8')).toContain('useHashScroll()');
 });

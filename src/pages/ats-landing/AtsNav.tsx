@@ -7,6 +7,7 @@ import type { WebTheme } from "./useWebTheme";
 const links = [
   { id: "modalidades", label: "Modalidades" },
   { id: "funciones", label: "Funciones" },
+  { id: "producto", label: "Producto" },
   { id: "como-empezar", label: "Cómo empezar" },
   { id: "contacto-ats", label: "Demo" },
 ];
