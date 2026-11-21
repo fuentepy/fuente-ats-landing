@@ -196,6 +196,30 @@ try{
     await item.scrollIntoViewIfNeeded();const handle=await item.elementHandle();await animated.waitForFunction(el=>getComputedStyle(el).opacity==='1',handle);
   }
   await animated.close();console.log('APROBADO aparición al hacer scroll con movimiento habilitado.');
+  // Enlace directo a una sección (/#producto): la página se dibuja con JavaScript, así que debe bajar igual, también en celular.
+  for(const width of [1440,390]){
+    for(const id of ['producto','contacto-ats','como-empezar']){
+      const page=await browser.newPage({viewport:{width,height:900}});await blockExternal(page);
+      await page.goto(`${base}/#${id}`);await page.getByRole('heading',{level:1}).waitFor();await page.waitForTimeout(1200);
+      const pos=await page.evaluate(target=>({y:scrollY,top:Math.round(document.getElementById(target).getBoundingClientRect().top)}),id);
+      assert.ok(pos.y>0&&pos.top>=0&&pos.top<=140,`/#${id} a ${width}px no llegó a la sección: ${JSON.stringify(pos)}`);
+      await page.close();
+    }
+    // Si la persona ya se movió, el salto automático no le pelea el scroll.
+    const page=await browser.newPage({viewport:{width,height:900}});await blockExternal(page);
+    await page.goto(`${base}/#producto`);await page.getByRole('heading',{level:1}).waitFor();await page.waitForTimeout(300);
+    await page.mouse.wheel(0,-100000);await page.waitForTimeout(1200);
+    assert.equal(await page.evaluate(()=>scrollY),0,`El salto automático pisó el scroll de la persona a ${width}px`);
+    await page.close();
+    // El menú tiene Producto y lleva a la sección.
+    const nav=await browser.newPage({viewport:{width,height:900}});await blockExternal(nav);await nav.goto(base);await nav.getByRole('heading',{level:1}).waitFor();
+    if(width===390){await nav.getByRole('button',{name:'Abrir menú'}).click();await nav.getByRole('navigation',{name:'Navegación móvil'}).getByRole('link',{name:'Producto',exact:true}).click();}
+    else await nav.getByRole('navigation',{name:'Navegación principal'}).getByRole('link',{name:'Producto',exact:true}).click();
+    await nav.waitForTimeout(2000);assert.equal(new URL(nav.url()).hash,'#producto');
+    const top=await nav.evaluate(()=>Math.round(document.getElementById('producto').getBoundingClientRect().top));assert.ok(top>=0&&top<=140,`Producto desde el menú a ${width}px: top=${top}`);
+    await nav.close();
+    console.log(`APROBADO enlaces directos y menú Producto a ${width}px.`);
+  }
   const nojs=await browser.newPage({javaScriptEnabled:false});await blockExternal(nojs);await nojs.goto(base);
   assert.equal(await nojs.getByRole('heading',{level:1,name:'FuenteHR',exact:true}).isVisible(),true);assert.equal(await nojs.getByRole('link',{name:'Iniciar sesión'}).getAttribute('href'),destinations[1]);await nojs.close();console.log('APROBADO resumen y acceso sin JavaScript.');
 }finally{if(browser)await browser.close();server.kill();}

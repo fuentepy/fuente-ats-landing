@@ -2,6 +2,7 @@ import "./styles.css";
 import { Toaster } from "sonner";
 import { useWebTheme } from "./useWebTheme";
 import { useReveal } from "./useReveal";
+import { useHashScroll } from "./useHashScroll";
 import { AtsNav } from "./AtsNav";
 import { AtsHero } from "./AtsHero";
 import { AtsFlow } from "./AtsFlow";
@@ -16,6 +17,7 @@ import { AtsFooter } from "./AtsFooter";
 // Landing de venta del software ATS (modulo de reclutamiento) a otras empresas/consultoras.
 export default function AtsLandingPage() {
   useReveal();
+  useHashScroll();
   const { theme, toggleTheme } = useWebTheme();
   return (
     <div className="landing-ats">
